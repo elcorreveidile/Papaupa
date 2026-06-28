@@ -12,7 +12,8 @@ type Perfil = {
   bioEs: string;
   bioEn: string;
   mascota: "patacon" | "patacona";
-  fondo: string; // color del círculo
+  fondo: string; // color del círculo (cuando no hay foto)
+  foto?: string; // foto real; si existe, sustituye a la mascota
 };
 
 const PERFILES: Perfil[] = [
@@ -27,12 +28,13 @@ const PERFILES: Perfil[] = [
   },
   {
     nombre: "Margarita",
-    rolEs: "La cocina",
-    rolEn: "The kitchen",
+    rolEs: "La cocinera",
+    rolEn: "The cook",
     bioEs: "Margarita trae a Granada los sabores de Colombia. Cocina como en casa, respetando los tiempos naturales y el producto, y los funde con el Mediterráneo en cada arepa, patacón y ceviche. Lo que llega a la mesa es comida hecha con tiempo y con alma.",
     bioEn: "Margarita brings the flavours of Colombia to Granada. She cooks the way you would at home, respecting natural rhythms and good produce, blending them with the Mediterranean in every arepa, patacón and ceviche. What reaches your table is food made with time and soul.",
     mascota: "patacona",
     fondo: "#f3b6a6",
+    foto: "/images/margarita.jpg",
   },
 ];
 
@@ -69,16 +71,19 @@ export default function Nosotros() {
             key={p.nombre}
             className="flex flex-col items-center rounded-3xl border border-marron/15 bg-crema/90 p-8 text-center shadow-sm backdrop-blur"
           >
-            <div
-              className="flex h-40 w-40 items-center justify-center rounded-full"
-              style={{ backgroundColor: p.fondo }}
-            >
-              {p.mascota === "patacon" ? (
-                <DonPatacon size={120} />
-              ) : (
-                <DonaPatacona size={120} />
-              )}
-            </div>
+            {p.foto ? (
+              <div className="h-40 w-40 overflow-hidden rounded-full ring-4 ring-mostaza/40">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.foto} alt={p.nombre} className="h-full w-full object-cover" />
+              </div>
+            ) : (
+              <div
+                className="flex h-40 w-40 items-center justify-center rounded-full"
+                style={{ backgroundColor: p.fondo }}
+              >
+                {p.mascota === "patacon" ? <DonPatacon size={120} /> : <DonaPatacona size={120} />}
+              </div>
+            )}
             <h2 className="mt-5 font-display text-3xl font-semibold italic text-marron">{p.nombre}</h2>
             <p className="mt-1 font-sans text-xs font-semibold uppercase tracking-[0.25em] text-terracota">
               {lang === "en" ? p.rolEn : p.rolEs}
