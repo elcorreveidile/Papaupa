@@ -1,0 +1,27 @@
+/** Marca-patacón de Papaupa (fondo transparente) para cabeceras y lockups. */
+export default function LogoMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      role="img"
+      aria-label="Papaupa"
+    >
+      <path
+        d="M 32.0 10.0 A 5 5 0 0 1 40.7 12.0 A 5 5 0 0 1 47.6 17.5 A 5 5 0 0 1 51.5 25.5 A 5 5 0 0 1 51.5 34.5 A 5 5 0 0 1 47.6 42.5 A 5 5 0 0 1 40.7 48.0 A 5 5 0 0 1 32.0 50.0 A 5 5 0 0 1 23.3 48.0 A 5 5 0 0 1 16.4 42.5 A 5 5 0 0 1 12.5 34.5 A 5 5 0 0 1 12.5 25.5 A 5 5 0 0 1 16.4 17.5 A 5 5 0 0 1 23.3 12.0 A 5 5 0 0 1 32.0 10.0 Z"
+        fill="#f2b705"
+        stroke="#2a1a0f"
+        strokeWidth="2.4"
+        strokeLinejoin="round"
+      />
+      <circle cx="26" cy="28" r="4" fill="#fffaf0" stroke="#2a1a0f" strokeWidth="1.4" />
+      <circle cx="38" cy="28" r="4" fill="#fffaf0" stroke="#2a1a0f" strokeWidth="1.4" />
+      <circle cx="26.5" cy="27" r="1.9" fill="#2a1a0f" />
+      <circle cx="38.5" cy="27" r="1.9" fill="#2a1a0f" />
+      <circle cx="32" cy="34" r="2" fill="#d83a1f" />
+      <path d="M32 38 Q25 42 18.5 38.5 Q22 41 26 39" fill="none" stroke="#1f3a8a" strokeWidth="3" strokeLinecap="round" />
+      <path d="M32 38 Q39 42 45.5 38.5 Q42 41 38 39" fill="none" stroke="#1f3a8a" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}

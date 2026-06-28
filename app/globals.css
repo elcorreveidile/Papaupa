@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/*
+  Papaupa · Retro Fusión Food
+  Paleta basada en la identidad real (estética retro setentera + guiño pride).
+*/
+:root {
+  --crema:        #f5ecd7; /* fondo papel cálido */
+  --crema-oscura: #e8d9b8;
+  --mostaza:      #f2b705; /* amarillo patacón */
+  --mostaza-osc:  #d99e00;
+  --terracota:    #c4502d; /* rojo-teja */
+  --granate:      #8c2f1f;
+  --marron:       #3b2415; /* tinta cálida */
+  --verde:        #4f7a4d; /* cortina / mediterráneo */
+  --azul:         #2e6f8e;
+  --tinta:        #1a1410;
+
+  --background: var(--crema);
+  --foreground: var(--marron);
+
+  /* Acentos pride para detalles puntuales */
+  --pride-1: #e74c3c;
+  --pride-2: #f39c12;
+  --pride-3: #f2b705;
+  --pride-4: #27ae60;
+  --pride-5: #2980b9;
+  --pride-6: #8e44ad;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-crema: var(--crema);
+  --color-crema-oscura: var(--crema-oscura);
+  --color-mostaza: var(--mostaza);
+  --color-mostaza-osc: var(--mostaza-osc);
+  --color-terracota: var(--terracota);
+  --color-granate: var(--granate);
+  --color-marron: var(--marron);
+  --color-verde: var(--verde);
+  --color-azul: var(--azul);
+  --color-tinta: var(--tinta);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Degradado arcoíris sutil para subrayados / divisores */
+.rainbow-rule {
+  background: linear-gradient(
+    90deg,
+    var(--pride-1) 0%,
+    var(--pride-2) 20%,
+    var(--pride-3) 40%,
+    var(--pride-4) 60%,
+    var(--pride-5) 80%,
+    var(--pride-6) 100%
+  );
+}
+
+@keyframes patacon-bob {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-14px) rotate(1deg); }
+}
+.animate-patacon {
+  animation: patacon-bob 3.2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96%           { transform: scaleY(0.1); }
+}
+
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(8px); }
+}
+.animate-bounce-soft {
+  animation: bounce-soft 1.8s ease-in-out infinite;
+}
+
+/* ----- Zona de juegos ----- */
+@keyframes burst-fly {
+  0%   { opacity: 1; transform: translate(0, 0) scale(0.5); }
+  100% { opacity: 0; transform: translate(var(--bx), var(--by)) scale(1.4); }
+}
+.burst-particle {
+  animation: burst-fly 1s ease-out forwards;
+}
+
+@keyframes flash-pop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(-6deg); }
+  30%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(3deg); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+}
+.flash-pop {
+  animation: flash-pop 0.85s ease-out forwards;
+}

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papaupa - Mockup Visual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #F4D03F;
+            --red: #E74C3C;
+            --orange: #F39C12;
+            --green: #27AE60;
+            --blue: #2980B9;
+            --purple: #8E44AD;
+            --dark: #1A1A1A;
+            --light: #FAFAF8;
+        }
+        
+        body {
+            background-color: var(--light);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .heading-display {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+        
+        .wave-divider {
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,30 Q300,0 600,30 T1200,30 L1200,60 L0,60 Z" fill="%23FAFAF8"/></svg>') repeat-x;
+            background-size: auto 60px;
+        }
+        
+        .nav-active {
+            color: var(--primary);
+            font-weight: 600;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .card-menu {
+            border-radius: 16px;
+            border: 2px solid #E8E8E8;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+        
+        .card-menu:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(244, 208, 63, 0.2);
+            border-color: var(--primary);
+        }
+        
+        .review-card {
+            border-left: 4px solid var(--primary);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: #E8C91F;
+            transform: scale(1.05);
+        }
+        
+        .rainbow-accent {
+            background: linear-gradient(90deg, 
+                #E74C3C 0%, 
+                #F39C12 20%, 
+                #F4D03F 40%, 
+                #27AE60 60%, 
+                #2980B9 80%, 
+                #8E44AD 100%);
+            background-size: 100% 3px;
+            background-repeat: no-repeat;
+            background-position: bottom;
+        }
+        
+        .tap-icon {
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .insta-item {
+            aspect-ratio: 1;
+            background: #E8E8E8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #999;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .insta-item::before {
+            content: '📸';
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== LANDING PAGE ===== -->
+<section id="landing" class="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-purple-50 flex flex-col items-center justify-center relative overflow-hidden">
+    <!-- Don Patacón SVG -->
+    <div class="mb-8 animate-bounce">
+        <svg width="180" height="200" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-lg">
+            <!-- Patacón body -->
+            <circle cx="100" cy="100" r="80" fill="#F4D03F" stroke="#1A1A1A" stroke-width="3"/>
+            <!-- Rough edges -->
+            <circle cx="60" cy="50" r="15" fill="#F4D03F" stroke="#1A1A1A" stroke-width="3"/>
+            <circle cx="140" cy="60" r="18" fill="#F4D03F" stroke="#1A1A1A" stroke-width="3"/>
+            <circle cx="50" cy="120" r="12" fill="#F4D03F" stroke="#1A1A1A" stroke-width="3"/>
+            <circle cx="155" cy="130" r="14" fill="#F4D03F" stroke="#1A1A1A" stroke-width="3"/>
+            
+            <!-- Eyes -->
+            <circle cx="75" cy="85" r="10" fill="#1A1A1A"/>
+            <circle cx="125" cy="85" r="10" fill="#1A1A1A"/>
+            <circle cx="77" cy="83" r="4" fill="white"/>
+            <circle cx="127" cy="83" r="4" fill="white"/>
+            
+            <!-- Eyebrows -->
+            <path d="M 70 75 Q 80 70 90 75" stroke="#1A1A1A" stroke-width="2" fill="none"/>
+            <path d="M 110 75 Q 120 70 130 75" stroke="#1A1A1A" stroke-width="2" fill="none"/>
+            
+            <!-- Mustache -->
+            <path d="M 100 105 Q 85 115 70 108" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M 100 105 Q 115 115 130 108" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            
+            <!-- Smile -->
+            <path d="M 85 120 Q 100 130 115 120" stroke="#E74C3C" stroke-width="3" fill="none" stroke-linecap="round"/>
+            
+            <!-- Hat -->
+            <rect x="50" y="20" width="100" height="20" rx="8" fill="#D4A5FF" stroke="#1A1A1A" stroke-width="3"/>
+            <circle cx="70" cy="15" r="8" fill="#87CEEB" stroke="#1A1A1A" stroke-width="2"/>
+            
+            <!-- Arms -->
+            <line x1="35" y1="100" x2="15" y2="95" stroke="#1A1A1A" stroke-width="8" stroke-linecap="round"/>
+            <line x1="165" y1="100" x2="185" y2="95" stroke="#1A1A1A" stroke-width="8" stroke-linecap="round"/>
+            
+            <!-- Legs (with rainbow shoes) -->
+            <line x1="80" y1="170" x2="75" y2="200" stroke="#1A1A1A" stroke-width="6" stroke-linecap="round"/>
+            <line x1="120" y1="170" x2="125" y2="200" stroke="#1A1A1A" stroke-width="6" stroke-linecap="round"/>
+            
+            <!-- Rainbow shoes -->
+            <rect x="65" y="200" width="20" height="12" rx="4" fill="#E74C3C"/>
+            <rect x="68" y="202" width="14" height="3" fill="#F39C12"/>
+            <rect x="68" y="206" width="14" height="3" fill="#27AE60"/>
+            
+            <rect x="115" y="200" width="20" height="12" rx="4" fill="#E74C3C"/>
+            <rect x="118" y="202" width="14" height="3" fill="#F39C12"/>
+            <rect x="118" y="206" width="14" height="3" fill="#27AE60"/>
+        </svg>
+    </div>
+    
+    <h1 class="heading-display text-6xl md:text-7xl mb-6 text-center">
+        ¿¿PASAS MARICA??
+    </h1>
+    
+    <p class="text-xl text-gray-600 mb-12 text-center max-w-xl">
+        Comida colombiana, trato familiar, sabor de casa
+    </p>
+    
+    <button class="btn-primary text-lg mb-8 shadow-lg" onclick="document.getElementById('home').scrollIntoView({behavior: 'smooth'})">
+        Entra <span class="tap-icon">👇</span>
+    </button>
+    
+    <div class="text-center text-sm text-gray-500 mt-12">
+        <p>Síguenos en Instagram: <strong>@papauparetrofusionfood</strong></p>
+    </div>
+</section>
+
+<!-- ===== MAIN WEB ===== -->
+<div id="home" class="scroll-smooth">
+
+<!-- Header/Nav -->
+<header class="sticky top-0 z-50 bg-white shadow-md">
+    <nav class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center md:flex-row flex-col gap-4">
+        <div class="heading-display text-2xl" style="color: var(--primary);">
+            🍌 PAPAUPA
+        </div>
+        <div class="flex gap-6 text-sm md:text-base font-medium">
+            <a href="#menu" class="nav-active">Menú</a>
+            <a href="#reserva" class="hover:text-yellow-500">Reserva</a>
+            <a href="#visitas" class="hover:text-yellow-500">Visitas</a>
+            <a href="#eventos" class="hover:text-yellow-500">Eventos</a>
+            <a href="#contacto" class="hover:text-yellow-500">Contacto</a>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-4 py-20">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+            <h2 class="heading-display text-5xl mb-6 rainbow-accent pb-4">
+                Te sentirás como en casa
+            </h2>
+            <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                Papaupa es más que un restaurante. Es el lugar donde Paco y su equipo cocinan con cariño cada plato, respetando los tiempos naturales, la calidad de los ingredientes y el sabor auténtico de Colombia y el Mediterráneo.
+            </p>
+            <div class="flex gap-4">
+                <button class="btn-primary">Ver Menú</button>
+                <button class="border-2 border-yellow-400 text-yellow-700 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-50">
+                    Reservar
+                </button>
+            </div>
+        </div>
+        <div class="bg-gradient-to-br from-orange-200 to-purple-200 rounded-2xl h-96 flex items-center justify-center shadow-xl">
+            <div class="text-6xl">🍛</div>
+        </div>
+    </div>
+</section>
+
+<div class="wave-divider"></div>
+
+<!-- Sobre Papaupa -->
+<section class="max-w-7xl mx-auto px-4 py-16">
+    <div class="bg-white rounded-2xl p-8 md:p-12 shadow-lg">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="md:col-span-2">
+                <h3 class="heading-display text-3xl mb-4">Sobre Papaupa</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong>Paco</strong> es el corazón de Papaupa. Con más de 30 años en la cocina, ha decidido abrir este espacio en el Realejo para compartir la comida que lo define: auténtica, casera, hecha con respeto.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    "Comida casera llena de cariño con respeto en el tiempo natural de cocinar nuestros alimentos. Disfrute y buen provecho."
+                </p>
+                <p class="text-sm text-gray-600 italic">
+                    — Filosofía de Papaupa
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-blue-100 to-green-100 rounded-xl h-64 flex items-center justify-center">
+                <div class="text-5xl">👨‍🍳</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Instagram Feed Preview -->
+<section class="max-w-7xl mx-auto px-4 py-16">
+    <h3 class="heading-display text-3xl mb-8 text-center">De nuestros clientes</h3>
+    <div class="instagram-grid">
+        <div class="insta-item">@EnPapaupa #1</div>
+        <div class="insta-item">@EnPapaupa #2</div>
+        <div class="insta-item">@EnPapaupa #3</div>
+        <div class="insta-item">@EnPapaupa #4</div>
+        <div class="insta-item">@EnPapaupa #5</div>
+        <div class="insta-item">@EnPapaupa #6</div>
+    </div>
+    <div class="text-center mt-8">
+        <p class="text-gray-600 mb-4">Etiquétanos en Instagram y aparecerás aquí</p>
+        <a href="#" class="btn-primary">Ver en Instagram →</a>
+    </div>
+</section>
+
+<!-- Menú Section -->
+<section id="menu" class="bg-gradient-to-b from-orange-50 to-white py-16">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="heading-display text-4xl mb-12 text-center">El Menú</h2>
+        
+        <!-- Tabs/Categorías -->
+        <div class="flex gap-2 mb-12 overflow-x-auto pb-4">
+            <button class="btn-primary whitespace-nowrap">Arepas</button>
+            <button class="px-6 py-2 bg-white border-2 border-gray-300 rounded-lg whitespace-nowrap hover:border-yellow-400">Patacones</button>
+            <button class="px-6 py-2 bg-white border-2 border-gray-300 rounded-lg whitespace-nowrap hover:border-yellow-400">Ceviche</button>
+            <button class="px-6 py-2 bg-white border-2 border-gray-300 rounded-lg whitespace-nowrap hover:border-yellow-400">Bocatas</button>
+            <button class="px-6 py-2 bg-white border-2 border-gray-300 rounded-lg whitespace-nowrap hover:border-yellow-400">Postres</button>
+        </div>
+        
+        <!-- Menu Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="card-menu">
+                <div class="bg-gradient-to-br from-red-200 to-orange-200 rounded-lg h-40 mb-4 flex items-center justify-center text-4xl">🥑</div>
+                <h4 class="heading-display text-xl mb-2">Arepa Cartagenera</h4>
+                <p class="text-gray-600 text-sm mb-3">Rellena de queso fresco y huevos</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-yellow-600 font-bold">9,50€</span>
+                    <span class="text-xs text-gray-500">🌱</span>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="card-menu">
+                <div class="bg-gradient-to-br from-yellow-200 to-green-200 rounded-lg h-40 mb-4 flex items-center justify-center text-4xl">🍌</div>
+                <h4 class="heading-display text-xl mb-2">Patacón Relleno</h4>
+                <p class="text-gray-600 text-sm mb-3">Platano frito con carne y queso</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-yellow-600 font-bold">8,50€</span>
+                    <span class="text-xs text-gray-500">🇨🇴</span>
+                </div>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="card-menu">
+                <div class="bg-gradient-to-br from-blue-200 to-cyan-200 rounded-lg h-40 mb-4 flex items-center justify-center text-4xl">🐟</div>
+                <h4 class="heading-display text-xl mb-2">Ceviche Cartagenero</h4>
+                <p class="text-gray-600 text-sm mb-3">Pescado fresco, limón, aguacate</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-yellow-600 font-bold">10,50€</span>
+                    <span class="text-xs text-gray-500">🌊</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <p class="text-gray-600 mb-6">
+                <em>Todos los platos se sirven con amor de Paco y su equipo</em>
+            </p>
+            <button class="btn-primary">Ver Menú Completo</button>
+        </div>
+    </div>
+</section>
+
+<!-- Libro de Visitas -->
+<section id="visitas" class="max-w-7xl mx-auto px-4 py-16">
+    <h2 class="heading-display text-4xl mb-12 text-center">Libro de Visitas</h2>
+    
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="review-card">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-300 to-orange-300 rounded-full flex items-center justify-center text-white font-bold">M</div>
+                <div>
+                    <p class="font-semibold">María</p>
+                    <p class="text-xs text-gray-500">Hace 2 días</p>
+                </div>
+            </div>
+            <div class="text-yellow-500 text-sm mb-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+            <p class="text-gray-700 text-sm">
+                "La mejor arepa que he comido en Granada. Paco es un artista. Volveré seguro."
+            </p>
+        </div>
+        
+        <div class="review-card">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-300 to-purple-300 rounded-full flex items-center justify-center text-white font-bold">J</div>
+                <div>
+                    <p class="font-semibold">Javier</p>
+                    <p class="text-xs text-gray-500">Hace 1 semana</p>
+                </div>
+            </div>
+            <div class="text-yellow-500 text-sm mb-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+            <p class="text-gray-700 text-sm">
+                "Ambiente acogedor, comida auténtica. Eso es Papaupa. Imprescindible en el Realejo."
+            </p>
+        </div>
+        
+        <div class="review-card">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-green-300 to-blue-300 rounded-full flex items-center justify-center text-white font-bold">S</div>
+                <div>
+                    <p class="font-semibold">Sofía</p>
+                    <p class="text-xs text-gray-500">Hace 10 días</p>
+                </div>
+            </div>
+            <div class="text-yellow-500 text-sm mb-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+            <p class="text-gray-700 text-sm">
+                "El ceviche es un sueño. La atención de Paco impresionante. Traigo a todos mis amigos."
+            </p>
+        </div>
+    </div>
+    
+    <div class="text-center bg-white rounded-lg p-8 border-2 border-yellow-200">
+        <p class="text-gray-600 mb-4">¿Visitaste Papaupa? Comparte tu experiencia</p>
+        <button class="btn-primary">Dejar Reseña</button>
+    </div>
+</section>
+
+<!-- Eventos -->
+<section id="eventos" class="bg-gradient-to-r from-purple-50 to-pink-50 py-16">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="heading-display text-4xl mb-12 text-center">Eventos & Actuaciones</h2>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Event Card 1 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                <div class="bg-gradient-to-r from-red-400 to-orange-400 h-32 flex items-center justify-center text-5xl">🎸</div>
+                <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">Viernes, 5 Julio • 21:00</p>
+                    <h4 class="heading-display text-2xl mb-3">Jam Session en Vivo</h4>
+                    <p class="text-gray-700 mb-4">
+                        Noche de música en directo con invitados sorpresa. ¡No te lo pierdas!
+                    </p>
+                    <button class="btn-primary">Reservar Mesa</button>
+                </div>
+            </div>
+            
+            <!-- Event Card 2 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                <div class="bg-gradient-to-r from-blue-400 to-purple-400 h-32 flex items-center justify-center text-5xl">🥳</div>
+                <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">Sábados • Flexible</p>
+                    <h4 class="heading-display text-2xl mb-3">Celebraciones Privadas</h4>
+                    <p class="text-gray-700 mb-4">
+                        Cumpleaños, bautizos, aniversarios. Paco cocina para tu día especial.
+                    </p>
+                    <button class="btn-primary">Consultar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reserva Section -->
+<section id="reserva" class="max-w-7xl mx-auto px-4 py-16">
+    <h2 class="heading-display text-4xl mb-12 text-center">Reservar Mesa</h2>
+    
+    <div class="grid md:grid-cols-2 gap-12">
+        <!-- Form -->
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Nombre *</label>
+                    <input type="text" placeholder="Tu nombre" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Teléfono *</label>
+                    <input type="tel" placeholder="+34 600 000 000" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Email *</label>
+                    <input type="email" placeholder="tu@email.com" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400"/>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Fecha *</label>
+                        <input type="date" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400"/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Hora *</label>
+                        <input type="time" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400"/>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Personas *</label>
+                    <input type="number" min="1" max="20" value="2" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Observaciones</label>
+                    <textarea placeholder="Alergias, preferencias..." rows="3" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-400"></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full text-lg">Reservar Ahora</button>
+            </form>
+        </div>
+        
+        <!-- Info -->
+        <div>
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <h4 class="heading-display text-2xl mb-6">Información</h4>
+                
+                <div class="mb-8">
+                    <h5 class="font-semibold text-lg mb-3">Horarios</h5>
+                    <p class="text-gray-700 mb-2"><strong>Lunes - Jueves:</strong> 13:00 - 23:00</p>
+                    <p class="text-gray-700 mb-2"><strong>Viernes - Sábado:</strong> 13:00 - 00:00</p>
+                    <p class="text-gray-700"><strong>Domingo:</strong> 13:00 - 22:00</p>
+                </div>
+                
+                <div class="mb-8">
+                    <h5 class="font-semibold text-lg mb-3">Contacto Rápido</h5>
+                    <p class="text-gray-700 mb-2">
+                        <a href="tel:+34958991844" class="text-yellow-600 font-semibold hover:underline">📞 +34 958 99 18 44</a>
+                    </p>
+                    <p class="text-gray-700">
+                        <a href="https://wa.me/34958991844" class="text-green-600 font-semibold hover:underline">💬 WhatsApp</a>
+                    </p>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                    <p class="text-sm text-gray-700">
+                        <strong>Tip:</strong> Para grupos grandes o eventos especiales, contacta con Paco directamente vía WhatsApp.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mapa -->
+<section id="contacto" class="bg-gray-100 py-16">
+    <div class="max-w-7xl mx-auto px-4">
+        <h3 class="heading-display text-3xl mb-8 text-center">¿Dónde estamos?</h3>
+        
+        <div class="bg-gray-300 rounded-xl h-96 flex items-center justify-center text-6xl shadow-lg mb-8">
+            🗺️ Mapa Leaflet (Realejo, Granada)
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 text-center shadow-lg">
+            <p class="text-lg text-gray-700 mb-2">
+                <strong>Papaupa Retro Fusión Food</strong>
+            </p>
+            <p class="text-gray-600 mb-4">
+                Realejo, Granada (dirección completa TBD)
+            </p>
+            <div class="flex gap-4 justify-center">
+                <button class="btn-primary">Abrir en Google Maps</button>
+                <button class="border-2 border-yellow-400 text-yellow-700 px-6 py-2 rounded-lg font-semibold">
+                    Cómo llegar
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="bg-gradient-to-r from-yellow-100 to-orange-100 py-12">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+        <h3 class="heading-display text-2xl mb-4">Entérate de todo</h3>
+        <p class="text-gray-700 mb-6">
+            Suscríbete para recibir actualizaciones sobre eventos, platos del día y novedades
+        </p>
+        <form class="flex gap-2 flex-col sm:flex-row">
+            <input type="email" placeholder="tu@email.com" class="flex-1 px-4 py-3 rounded-lg border-none focus:outline-none"/>
+            <button type="submit" class="btn-primary px-8">Suscribirse</button>
+        </form>
+    </div>
+</section>
+
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <p class="heading-display text-2xl mb-4" style="color: var(--primary);">🍌 PAPAUPA</p>
+                <p class="text-gray-400 text-sm">Comida colombiana, sabor de casa, trato familiar.</p>
+            </div>
+            <div>
+                <h5 class="font-semibold mb-4">Navegación</h5>
+                <ul class="text-gray-400 text-sm space-y-2">
+                    <li><a href="#menu" class="hover:text-yellow-400">Menú</a></li>
+                    <li><a href="#visitas" class="hover:text-yellow-400">Visitas</a></li>
+                    <li><a href="#eventos" class="hover:text-yellow-400">Eventos</a></li>
+                    <li><a href="#contacto" class="hover:text-yellow-400">Contacto</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-semibold mb-4">Contacto</h5>
+                <ul class="text-gray-400 text-sm space-y-2">
+                    <li><a href="tel:+34958991844" class="hover:text-yellow-400">+34 958 99 18 44</a></li>
+                    <li><a href="mailto:info@papaupa.com" class="hover:text-yellow-400">info@papaupa.com</a></li>
+                    <li class="pt-2">Realejo, Granada</li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="font-semibold mb-4">Síguenos</h5>
+                <div class="flex gap-3 text-2xl">
+                    <a href="#" class="hover:text-yellow-400">📱</a>
+                    <a href="#" class="hover:text-yellow-400">📷</a>
+                    <a href="#" class="hover:text-yellow-400">👍</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2024 Papaupa Retro Fusión Food. Hecho con ❤️ en Granada.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
