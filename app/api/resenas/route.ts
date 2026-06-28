@@ -14,8 +14,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Datos no válidos" }, { status: 400 });
   }
 
+  const { fotoUrl, ...resena } = parsed.data;
+
   // Se guarda como "pendiente": Paco la aprueba desde el panel antes de publicarse.
-  await db.insert(resenas).values({ ...parsed.data, estado: "pendiente" });
+  await db.insert(resenas).values({
+    ...resena,
+    fotoUrl: fotoUrl || null,
+    estado: "pendiente",
+  });
 
   return NextResponse.json({ ok: true });
 }

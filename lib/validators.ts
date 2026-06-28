@@ -5,6 +5,7 @@ export const resenaSchema = z.object({
   email: z.string().trim().email(),
   rating: z.number().int().min(1).max(5),
   comentario: z.string().trim().min(5).max(150),
+  fotoUrl: z.union([z.string().trim().url(), z.literal("")]).optional(),
 });
 
 export type ResenaInput = z.infer<typeof resenaSchema>;

@@ -61,7 +61,15 @@ export default async function AdminVisitas() {
               </div>
               <span className="font-sans text-xs text-marron/40">{r.email}</span>
             </div>
-            <p className="mt-2 font-sans text-marron/80">“{r.comentario}”</p>
+            <div className="mt-2 flex gap-3">
+              {r.fotoUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <a href={r.fotoUrl} target="_blank" rel="noopener noreferrer" className="shrink-0">
+                  <img src={r.fotoUrl} alt="foto de la reseña" className="h-20 w-20 rounded-lg object-cover" />
+                </a>
+              )}
+              <p className="font-sans text-marron/80">“{r.comentario}”</p>
+            </div>
             <div className="mt-3 flex flex-wrap gap-2">
               {r.estado !== "aprobada" && (
                 <form action={moderar}>

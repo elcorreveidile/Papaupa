@@ -22,14 +22,12 @@ export default async function VisitasPage() {
     nombre: r.nombre,
     rating: r.rating,
     comentario: r.comentario,
+    fotoUrl: r.fotoUrl,
     creadoISO: r.creadoEn.toISOString(),
   }));
 
   return (
-    <div
-      className="fondo min-h-svh"
-      style={{ "--fondo-img": "url(/images/fondo-visitas.jpg)" } as React.CSSProperties}
-    >
+    <div className="corcho min-h-svh">
       <Header />
       <VisitasCliente resenas={resenas} />
       <footer className="bg-marron py-8 text-center text-crema/80">
