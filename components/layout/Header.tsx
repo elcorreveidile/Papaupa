@@ -7,6 +7,7 @@ import { LangToggle, useLang } from "@/lib/i18n";
 
 const NAV = [
   { href: "/menu", es: "Menú", en: "Menu" },
+  { href: "/nosotros", es: "Nosotros", en: "About" },
   { href: "/reservas", es: "Reservas", en: "Bookings" },
   { href: "/galeria", es: "Galería", en: "Gallery" },
   { href: "/visitas", es: "Visitas", en: "Guestbook" },
