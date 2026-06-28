@@ -1,0 +1,6 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="50" r="40" fill="none" stroke="#2f6b4f" stroke-width="5"/>
+  <path d="M 62 12 l 1 9 l 8 -5 z" fill="#2f6b4f"/>
+  <path d="M 38 88 l -1 -9 l -8 5 z" fill="#2f6b4f"/>
+  <text x="50" y="62" text-anchor="middle" fill="#2f6b4f" font-size="30" font-weight="800" letter-spacing="-1.5" font-family="Helvetica, Arial, sans-serif">QPQ</text>
+</svg>
