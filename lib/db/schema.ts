@@ -66,7 +66,22 @@ export const newsletter = pgTable("newsletter", {
   creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
 });
 
+/** Reservas de mesa. */
+export const reservas = pgTable("reservas", {
+  id: serial("id").primaryKey(),
+  nombre: varchar("nombre", { length: 120 }).notNull(),
+  telefono: varchar("telefono", { length: 32 }).notNull(),
+  email: varchar("email", { length: 255 }),
+  fecha: varchar("fecha", { length: 10 }).notNull(), // YYYY-MM-DD
+  hora: varchar("hora", { length: 5 }).notNull(), // HH:MM
+  personas: integer("personas").notNull(),
+  observaciones: text("observaciones"),
+  estado: varchar("estado", { length: 12 }).notNull().default("pendiente"), // pendiente | confirmada | cancelada
+  creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export type Usuario = typeof usuarios.$inferSelect;
+export type Reserva = typeof reservas.$inferSelect;
 export type Evento = typeof eventos.$inferSelect;
 export type NuevoEvento = typeof eventos.$inferInsert;
 export type Resena = typeof resenas.$inferSelect;

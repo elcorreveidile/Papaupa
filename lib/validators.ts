@@ -8,3 +8,15 @@ export const resenaSchema = z.object({
 });
 
 export type ResenaInput = z.infer<typeof resenaSchema>;
+
+export const reservaSchema = z.object({
+  nombre: z.string().trim().min(2).max(120),
+  telefono: z.string().trim().min(6).max(32),
+  email: z.union([z.string().trim().email(), z.literal("")]).optional(),
+  fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  hora: z.string().regex(/^\d{2}:\d{2}$/),
+  personas: z.number().int().min(1).max(20),
+  observaciones: z.string().trim().max(300).optional(),
+});
+
+export type ReservaInput = z.infer<typeof reservaSchema>;

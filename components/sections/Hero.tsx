@@ -40,7 +40,7 @@ export default function Hero() {
               {t("Ver el menú", "See the menu")}
             </Link>
             <Link
-              href="#reservas"
+              href="/reservas"
               className="rounded-full border-2 border-marron/30 px-7 py-3 font-sans font-semibold text-marron transition-colors hover:border-terracota hover:text-terracota"
             >
               {t("Reservar mesa", "Book a table")}

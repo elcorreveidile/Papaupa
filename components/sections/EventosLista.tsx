@@ -62,7 +62,7 @@ export default function EventosLista({ eventos }: { eventos: EventoPublico[] }) 
                   <p className="mt-2 font-sans text-marron/75">{desc}</p>
                   <div className="mt-5 flex flex-wrap gap-3">
                     <a
-                      href={e.enlace || "https://wa.me/34958991844"}
+                      href={e.enlace || "/reservas"}
                       target={e.enlace ? "_blank" : undefined}
                       rel="noopener noreferrer"
                       className="rounded-full bg-mostaza px-6 py-2.5 font-sans font-bold text-marron transition-colors hover:bg-mostaza-osc"
