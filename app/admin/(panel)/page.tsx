@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { count, eq } from "drizzle-orm";
-import { db, eventos, resenas, reservas } from "@/lib/db";
+import { db, eventos, resenas, reservas, galeria } from "@/lib/db";
 import { getSession } from "@/lib/auth/server";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function Dashboard() {
   const session = await getSession();
   const [{ value: numEventos }] = await db.select({ value: count() }).from(eventos);
+  const [{ value: numFotos }] = await db.select({ value: count() }).from(galeria);
   const [{ value: numResenasPend }] = await db
     .select({ value: count() })
     .from(resenas)
@@ -24,7 +25,7 @@ export default async function Dashboard() {
       </h1>
       <p className="mt-1 font-sans text-marron/60">Este es el panel de Papaupa.</p>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-3">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <Link
           href="/admin/reservas"
           className="rounded-3xl border border-marron/15 bg-white/60 p-6 shadow-sm transition-transform hover:-translate-y-1"
@@ -41,6 +42,15 @@ export default async function Dashboard() {
           <p className="font-sans text-sm uppercase tracking-wide text-terracota">Eventos</p>
           <p className="mt-1 font-display text-4xl font-semibold text-marron">{numEventos}</p>
           <p className="mt-1 font-sans text-sm text-marron/60">Gestionar eventos y actuaciones →</p>
+        </Link>
+
+        <Link
+          href="/admin/galeria"
+          className="rounded-3xl border border-marron/15 bg-white/60 p-6 shadow-sm transition-transform hover:-translate-y-1"
+        >
+          <p className="font-sans text-sm uppercase tracking-wide text-terracota">Galería</p>
+          <p className="mt-1 font-display text-4xl font-semibold text-marron">{numFotos}</p>
+          <p className="mt-1 font-sans text-sm text-marron/60">Fotos del restaurante →</p>
         </Link>
 
         <Link

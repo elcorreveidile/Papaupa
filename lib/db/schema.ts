@@ -80,8 +80,20 @@ export const reservas = pgTable("reservas", {
   creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
 });
 
+/** Galería de fotos del restaurante (sustituye el feed de Instagram). */
+export const galeria = pgTable("galeria", {
+  id: serial("id").primaryKey(),
+  url: varchar("url", { length: 500 }).notNull(),
+  titulo: varchar("titulo", { length: 160 }),
+  tituloEn: varchar("titulo_en", { length: 160 }),
+  orden: integer("orden").notNull().default(0),
+  visible: boolean("visible").notNull().default(true),
+  creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export type Usuario = typeof usuarios.$inferSelect;
 export type Reserva = typeof reservas.$inferSelect;
+export type Foto = typeof galeria.$inferSelect;
 export type Evento = typeof eventos.$inferSelect;
 export type NuevoEvento = typeof eventos.$inferInsert;
 export type Resena = typeof resenas.$inferSelect;
