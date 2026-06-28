@@ -8,7 +8,7 @@ import { LangToggle, useLang } from "@/lib/i18n";
 const NAV = [
   { href: "/menu", es: "Menú", en: "Menu" },
   { href: "#reservas", es: "Reservas", en: "Bookings" },
-  { href: "#visitas", es: "Visitas", en: "Guestbook" },
+  { href: "/visitas", es: "Visitas", en: "Guestbook" },
   { href: "/eventos", es: "Eventos", en: "Events" },
   { href: "#contacto", es: "Contacto", en: "Contact" },
   { href: "/juegos", es: "El patio 🎮", en: "Playground 🎮" },

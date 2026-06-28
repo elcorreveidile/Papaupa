@@ -30,11 +30,14 @@ export default async function Dashboard() {
           <p className="mt-1 font-sans text-sm text-marron/60">Gestionar eventos y actuaciones →</p>
         </Link>
 
-        <div className="rounded-3xl border border-marron/15 bg-white/60 p-6 shadow-sm">
+        <Link
+          href="/admin/visitas"
+          className="rounded-3xl border border-marron/15 bg-white/60 p-6 shadow-sm transition-transform hover:-translate-y-1"
+        >
           <p className="font-sans text-sm uppercase tracking-wide text-terracota">Reseñas pendientes</p>
           <p className="mt-1 font-display text-4xl font-semibold text-marron">{numResenasPend}</p>
-          <p className="mt-1 font-sans text-sm text-marron/60">Moderación (próximamente)</p>
-        </div>
+          <p className="mt-1 font-sans text-sm text-marron/60">Moderar el libro de visitas →</p>
+        </Link>
       </div>
     </div>
   );

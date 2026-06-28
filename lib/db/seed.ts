@@ -1,4 +1,4 @@
-import { db, usuarios, eventos } from "./index";
+import { db, usuarios, eventos, resenas } from "./index";
 import { sql } from "drizzle-orm";
 
 async function main() {
@@ -38,9 +38,21 @@ async function main() {
     ]);
   }
 
+  // Reseñas de ejemplo (aprobadas) — solo si no hay ninguna.
+  const [{ count: nResenas }] = await db.execute<{ count: number }>(
+    sql`select count(*)::int as count from resenas`,
+  );
+  if (Number(nResenas) === 0) {
+    await db.insert(resenas).values([
+      { nombre: "María", email: "maria@example.com", rating: 5, comentario: "La mejor arepa que he comido en Granada. Paco y Margarita, un encanto.", estado: "aprobada" },
+      { nombre: "Javier", email: "javier@example.com", rating: 5, comentario: "Ambiente acogedor y comida auténtica. Imprescindible en el Realejo.", estado: "aprobada" },
+      { nombre: "Sofía", email: "sofia@example.com", rating: 4, comentario: "El ceviche es un sueño. Volveré con más gente.", estado: "aprobada" },
+    ]);
+  }
+
   const us = await db.select().from(usuarios);
   console.log(`✓ Usuarios: ${us.map((u) => `${u.nombre} (${u.rol})`).join(", ")}`);
-  console.log(`✓ Eventos sembrados.`);
+  console.log(`✓ Eventos y reseñas sembrados.`);
   process.exit(0);
 }
 
