@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function Juegos() {
   return (
-    <div className="min-h-svh bg-crema">
+    <div className="juegos-pantalla min-h-svh">
       <header className="border-b border-marron/15 bg-crema/90 backdrop-blur-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
           <Link

@@ -208,8 +208,7 @@ export default function JuegoEsquiva() {
 
       <div
         ref={areaRef}
-        className="relative h-[62svh] min-h-[340px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
-        style={{ background: "repeating-linear-gradient(45deg, #f5ecd7 0 26px, #efe3c6 26px 52px)" }}
+        className="patio-field relative h-[62svh] min-h-[340px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
         onPointerDown={(e) => {
           (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
           setTouchFromEvent(e);

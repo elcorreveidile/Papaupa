@@ -87,6 +87,21 @@ body {
 }
 
 /* ----- Zona de juegos ----- */
+/* Fondo de pantalla de la página de juegos: interior real (mesa grande) con velo crema */
+.juegos-pantalla {
+  background-image:
+    linear-gradient(rgba(245, 236, 215, 0.74), rgba(245, 236, 215, 0.8)),
+    url("/images/interior-juegos.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Campo de juego (rayado limpio) */
+.patio-field {
+  background: repeating-linear-gradient(45deg, #f5ecd7 0 26px, #efe3c6 26px 52px);
+}
+
 @keyframes burst-fly {
   0%   { opacity: 1; transform: translate(0, 0) scale(0.5); }
   100% { opacity: 0; transform: translate(var(--bx), var(--by)) scale(1.4); }
