@@ -3,7 +3,7 @@
 **Proyecto:** Papaupa Retro Fusión Food  
 **Cliente:** Paco (gerente) en Realejo, Granada  
 **Fecha Creación:** Junio 2024  
-**Estado:** Ready for Development (Claude Code)
+**Estado:** Ready for Development
 
 ---
 
