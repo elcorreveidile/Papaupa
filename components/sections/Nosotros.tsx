@@ -25,6 +25,7 @@ const PERFILES: Perfil[] = [
     bioEn: "Paco is the soul of the house: the one who greets you at the door, finds you a table and makes sure you leave happier than you came in. Every dish is served with his care and the whole team's — no rush, and the door always open.",
     mascota: "patacon",
     fondo: "#f7d77a",
+    foto: "/images/paco.jpg",
   },
   {
     nombre: "Margarita",
