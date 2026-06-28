@@ -2,6 +2,7 @@ import { asc, desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db, galeria } from "@/lib/db";
 import { requireSession } from "@/lib/auth/server";
+import SubirFoto from "@/components/admin/SubirFoto";
 
 export const dynamic = "force-dynamic";
 
@@ -59,14 +60,20 @@ export default async function AdminGaleria() {
     <div>
       <h1 className="font-display text-3xl font-semibold italic text-marron">Galería</h1>
       <p className="mt-1 font-sans text-marron/60">
-        Pega la URL de una foto (puede ser <code>/images/archivo.jpg</code> del propio sitio o un
-        enlace externo). Las de menor número de orden salen primero.
+        Sube fotos desde el ordenador o el móvil. Las de menor número de orden salen primero.
       </p>
 
-      {/* Crear */}
+      {/* Subir desde el dispositivo (Vercel Blob) */}
+      <SubirFoto />
+
+      {/* Alta por URL (opción avanzada) */}
+      <details className="mt-6">
+        <summary className="cursor-pointer font-sans text-sm font-semibold text-marron/70 hover:text-terracota">
+          O añadir una foto por URL (avanzado)
+        </summary>
       <form
         action={crearFoto}
-        className="mt-6 grid gap-4 rounded-3xl border border-marron/15 bg-white/60 p-6 sm:grid-cols-2"
+        className="mt-4 grid gap-4 rounded-3xl border border-marron/15 bg-white/60 p-6 sm:grid-cols-2"
       >
         <label className="block sm:col-span-2">
           <span className="font-sans text-sm font-semibold text-marron">URL de la foto *</span>
@@ -97,6 +104,7 @@ export default async function AdminGaleria() {
           </button>
         </div>
       </form>
+      </details>
 
       {/* Listado */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
