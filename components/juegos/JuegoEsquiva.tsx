@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
+import { useLang } from "@/lib/i18n";
 
 const S = 76;
 const PSPEED = 4.6;
@@ -11,6 +12,7 @@ const MAXFOES = 3;
 type Foe = { x: number; y: number; vx: number; vy: number; active: boolean };
 
 export default function JuegoEsquiva() {
+  const { t } = useLang();
   const areaRef = useRef<HTMLDivElement | null>(null);
   const heroEl = useRef<HTMLDivElement | null>(null);
   const foeEls = useRef<(HTMLDivElement | null)[]>([]);
@@ -201,9 +203,9 @@ export default function JuegoEsquiva() {
       <div className="mb-3 flex items-center justify-between font-sans text-marron">
         <span className="font-bold">⏱️ {score}s</span>
         <span className="text-sm font-semibold text-terracota">
-          {chasers === 1 ? "1 perseguidor" : `${chasers} perseguidores`}
+          {chasers} {t(chasers === 1 ? "perseguidor" : "perseguidores", chasers === 1 ? "chaser" : "chasers")}
         </span>
-        <span className="text-sm text-marron/70">Récord: {best}s</span>
+        <span className="text-sm text-marron/70">{t("Récord", "Best")}: {best}s</span>
       </div>
 
       <div
@@ -237,22 +239,24 @@ export default function JuegoEsquiva() {
 
         {status === "over" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-marron/70 text-center text-crema backdrop-blur-sm">
-            <p className="font-display text-4xl font-bold italic">¡Te pillaron! 😵</p>
-            <p className="mt-2 font-sans text-lg">Aguantaste {score} segundos</p>
+            <p className="font-display text-4xl font-bold italic">{t("¡Te pillaron! 😵", "You got caught! 😵")}</p>
+            <p className="mt-2 font-sans text-lg">{t(`Aguantaste ${score} segundos`, `You lasted ${score} seconds`)}</p>
             <button
               type="button"
               onClick={init}
               className="mt-6 rounded-full bg-mostaza px-7 py-3 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
             >
-              🔁 Jugar otra vez
+              🔁 {t("Jugar otra vez", "Play again")}
             </button>
           </div>
         )}
       </div>
 
       <p className="mt-3 text-center font-sans text-sm text-marron/60">
-        🖥️ <strong>Flechas</strong> o <strong>WASD</strong> · 📱 arrastra el dedo. Don Patacón
-        anticipa tus movimientos y llegan refuerzos… ¡no te confíes!
+        {t(
+          "🖥️ Flechas o WASD · 📱 arrastra el dedo. Don Patacón anticipa tus movimientos y llegan refuerzos… ¡no te confíes!",
+          "🖥️ Arrow keys or WASD · 📱 drag your finger. Don Patacón predicts your moves and backup arrives… don't get cocky!",
+        )}
       </p>
     </div>
   );

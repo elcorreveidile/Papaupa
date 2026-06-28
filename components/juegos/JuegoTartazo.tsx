@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
+import { useLang } from "@/lib/i18n";
 
 const S = 76; // tamaño personajes
 const GAME_TIME = 30; // segundos
@@ -12,6 +13,7 @@ const COOLDOWN = 180; // ms entre lanzamientos
 type Cake = { el: HTMLDivElement; x: number; y: number; vx: number; vy: number };
 
 export default function JuegoTartazo() {
+  const { t } = useLang();
   const areaRef = useRef<HTMLDivElement | null>(null);
   const cakeLayer = useRef<HTMLDivElement | null>(null);
   const foeEl = useRef<HTMLDivElement | null>(null);
@@ -159,7 +161,7 @@ export default function JuegoTartazo() {
       <div className="mb-3 flex items-center justify-between font-sans text-marron">
         <span className="font-bold">🎂 {score}</span>
         <span className="font-bold">⏱️ {time}s</span>
-        <span className="text-sm text-marron/70">Récord: {best}</span>
+        <span className="text-sm text-marron/70">{t("Récord", "Best")}: {best}</span>
       </div>
 
       <div
@@ -187,22 +189,26 @@ export default function JuegoTartazo() {
 
         {status === "over" && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 text-center text-crema backdrop-blur-sm">
-            <p className="font-display text-4xl font-bold italic">¡Se acabó el tiempo!</p>
-            <p className="mt-2 font-sans text-lg">Le diste {score} tartazo{score === 1 ? "" : "s"} 🎂</p>
+            <p className="font-display text-4xl font-bold italic">{t("¡Se acabó el tiempo!", "Time's up!")}</p>
+            <p className="mt-2 font-sans text-lg">
+              {t(`Le diste ${score} tartazo${score === 1 ? "" : "s"} 🎂`, `You landed ${score} cake${score === 1 ? "" : "s"} 🎂`)}
+            </p>
             <button
               type="button"
               onClick={init}
               className="mt-6 rounded-full bg-mostaza px-7 py-3 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
             >
-              🔁 Otra ronda
+              🔁 {t("Otra ronda", "Another round")}
             </button>
           </div>
         )}
       </div>
 
       <p className="mt-3 text-center font-sans text-sm text-marron/60">
-        📱 Toca donde quieras lanzar la tarta · 🖥️ apunta con el ratón y haz clic (o <strong>barra espaciadora</strong>).
-        ¡Dale a Don Patacón!
+        {t(
+          "📱 Toca donde quieras lanzar la tarta · 🖥️ apunta con el ratón y haz clic (o barra espaciadora). ¡Dale a Don Patacón!",
+          "📱 Tap where you want to throw the cake · 🖥️ aim with the mouse and click (or spacebar). Hit Don Patacón!",
+        )}
       </p>
     </div>
   );

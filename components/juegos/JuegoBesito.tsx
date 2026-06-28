@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
+import { useLang } from "@/lib/i18n";
 
 const S = 72;
 const PSPEED = 4.6;
@@ -10,6 +11,7 @@ const PSPEED = 4.6;
 type Obstacle = { el: HTMLDivElement; x: number; y: number; vx: number; vy: number };
 
 export default function JuegoBesito() {
+  const { t } = useLang();
   const areaRef = useRef<HTMLDivElement | null>(null);
   const heroEl = useRef<HTMLDivElement | null>(null);
   const goalEl = useRef<HTMLDivElement | null>(null);
@@ -190,7 +192,7 @@ export default function JuegoBesito() {
     <div>
       <div className="mb-3 flex items-center justify-between font-sans text-marron">
         <span className="font-bold">💋 {score}</span>
-        <span className="text-sm text-marron/70">Récord: {best}</span>
+        <span className="text-sm text-marron/70">{t("Récord", "Best")}: {best}</span>
       </div>
 
       <div
@@ -221,22 +223,26 @@ export default function JuegoBesito() {
 
         {status === "over" && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 text-center text-crema backdrop-blur-sm">
-            <p className="font-display text-4xl font-bold italic">¡Ay, el chile! 🌶️</p>
-            <p className="mt-2 font-sans text-lg">Repartiste {score} besito{score === 1 ? "" : "s"} 💋</p>
+            <p className="font-display text-4xl font-bold italic">{t("¡Ay, el chile! 🌶️", "Ouch, the chili! 🌶️")}</p>
+            <p className="mt-2 font-sans text-lg">
+              {t(`Repartiste ${score} besito${score === 1 ? "" : "s"} 💋`, `You gave ${score} kiss${score === 1 ? "" : "es"} 💋`)}
+            </p>
             <button
               type="button"
               onClick={init}
               className="mt-6 rounded-full bg-mostaza px-7 py-3 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
             >
-              🔁 Otra vez
+              🔁 {t("Otra vez", "Again")}
             </button>
           </div>
         )}
       </div>
 
       <p className="mt-3 text-center font-sans text-sm text-marron/60">
-        Lleva a la Patacona hasta Don Patacón para darle un besito 💋, ¡pero esquiva los chiles
-        🌶️! 🖥️ flechas/WASD · 📱 arrastra el dedo.
+        {t(
+          "Lleva a la Patacona hasta Don Patacón para darle un besito 💋, ¡pero esquiva los chiles 🌶️! 🖥️ flechas/WASD · 📱 arrastra el dedo.",
+          "Guide the Patacona to Don Patacón for a kiss 💋, but dodge the chilies 🌶️! 🖥️ arrows/WASD · 📱 drag your finger.",
+        )}
       </p>
     </div>
   );

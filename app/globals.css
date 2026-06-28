@@ -9,7 +9,7 @@
   --crema-oscura: #e8d9b8;
   --mostaza:      #f2b705; /* amarillo patacón */
   --mostaza-osc:  #d99e00;
-  --terracota:    #c4502d; /* rojo-teja */
+  --terracota:    #a23818; /* rojo-teja (oscurecido para contraste sobre fondos) */
   --granate:      #8c2f1f;
   --marron:       #3b2415; /* tinta cálida */
   --verde:        #4f7a4d; /* cortina / mediterráneo */
@@ -84,6 +84,17 @@ body {
 }
 .animate-bounce-soft {
   animation: bounce-soft 1.8s ease-in-out infinite;
+}
+
+/* Fondo de página a pantalla completa. Cada página define su imagen con la
+   variable --fondo-img; el velo se ajusta con --fondo-velo (0 = imagen plena). */
+.fondo {
+  background-image:
+    linear-gradient(rgba(245, 236, 215, 0.42), rgba(245, 236, 215, 0.52)),
+    var(--fondo-img, url("/images/fondo-inicio.jpg"));
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 /* ----- Zona de juegos ----- */

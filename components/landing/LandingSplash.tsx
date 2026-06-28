@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DonPatacon from "./DonPatacon";
+import VideoIntro from "./VideoIntro";
+import { useLang } from "@/lib/i18n";
 
 const TOTAL_BITES = 3;
 const MASCOT = 120; // tamaño del patacón en modo juego (px)
@@ -20,9 +22,11 @@ const MASCOT = 120; // tamaño del patacón en modo juego (px)
  */
 export default function LandingSplash() {
   const router = useRouter();
+  const { lang, setLang, t } = useLang();
   const [mode, setMode] = useState<"static" | "game">("static");
   const [bites, setBites] = useState(0);
   const [eaten, setEaten] = useState(false);
+  const [playingVideo, setPlayingVideo] = useState(false);
 
   const mascotRef = useRef<HTMLButtonElement | null>(null);
   const pos = useRef({ x: 0, y: 0 });
@@ -139,7 +143,7 @@ export default function LandingSplash() {
       if (next >= TOTAL_BITES) {
         setEaten(true);
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        window.setTimeout(() => router.push("/inicio"), 680);
+        window.setTimeout(() => setPlayingVideo(true), 680);
       }
       return next;
     });
@@ -160,10 +164,20 @@ export default function LandingSplash() {
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/35 to-black/65" />
 
+      <button
+        type="button"
+        onClick={() => setLang(lang === "es" ? "en" : "es")}
+        aria-label={lang === "es" ? "Switch to English" : "Cambiar a español"}
+        className="absolute right-4 top-4 z-30 rounded-full border border-crema/50 px-3 py-1 font-sans text-xs font-bold uppercase tracking-wider text-crema/90 transition-colors hover:border-mostaza hover:text-mostaza"
+      >
+        {lang === "es" ? "EN" : "ES"}
+      </button>
+
       {mode === "static" ? (
         /* ---------- PUERTA ESTÁTICA ---------- */
-        <Link
-          href="/inicio"
+        <button
+          type="button"
+          onClick={() => setPlayingVideo(true)}
           aria-label="Entrar a Papaupa"
           className="group flex flex-col items-center outline-none"
         >
@@ -178,10 +192,10 @@ export default function LandingSplash() {
             className="mt-4 max-w-md font-sans text-base text-crema/90 sm:text-lg"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.7)" }}
           >
-            Comida colombiana, trato familiar, sabor de casa.
+            {t("Comida colombiana, trato familiar, sabor de casa.", "Colombian food, family vibes, the taste of home.")}
           </p>
           <span className="mt-10 flex items-center gap-2 rounded-full border border-crema/50 px-6 py-2 font-sans text-xs uppercase tracking-[0.3em] text-crema/90 transition-colors group-hover:border-mostaza group-hover:text-mostaza">
-            Entra
+            {t("Entra", "Enter")}
             <svg
               width="16"
               height="16"
@@ -197,7 +211,7 @@ export default function LandingSplash() {
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </span>
-        </Link>
+        </button>
       ) : (
         /* ---------- MINIJUEGO ---------- */
         <>
@@ -207,14 +221,15 @@ export default function LandingSplash() {
               className="animate-patacon font-display text-4xl font-semibold italic text-crema sm:text-6xl"
               style={{ textShadow: "0 3px 18px rgba(0,0,0,0.7)" }}
             >
-              {eaten ? "¡Ñam! 🍴" : "¡Cómeme para entrar!"}
+              {eaten ? t("¡Ñam! 🍴", "Yum! 🍴") : t("¡Cómeme para entrar!", "Eat me to come in!")}
             </h1>
             {!eaten && (
               <p
                 className="mt-3 font-sans text-sm uppercase tracking-[0.25em] text-crema/90 sm:text-base"
                 style={{ textShadow: "0 2px 10px rgba(0,0,0,0.8)" }}
               >
-                Atrápame · {restantes} mordisco{restantes === 1 ? "" : "s"} más
+                {t("Atrápame", "Catch me")} · {restantes}{" "}
+                {lang === "en" ? (restantes === 1 ? "bite" : "bites") : `mordisco${restantes === 1 ? "" : "s"}`} {t("más", "to go")}
               </p>
             )}
           </div>
@@ -238,10 +253,12 @@ export default function LandingSplash() {
             href="/inicio"
             className="absolute bottom-6 right-6 z-10 font-sans text-xs uppercase tracking-[0.25em] text-crema/70 underline-offset-4 transition-colors hover:text-mostaza hover:underline"
           >
-            Saltar →
+            {t("Saltar", "Skip")} →
           </Link>
         </>
       )}
+
+      {playingVideo && <VideoIntro onDone={() => router.push("/inicio")} />}
     </main>
   );
 }
