@@ -5,8 +5,7 @@ import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
 import { useLang } from "@/lib/i18n";
 
-const S = 72;
-const PSPEED = 4.6;
+const sizeFor = (w: number) => Math.max(34, Math.min(72, Math.round(w * 0.105)));
 
 type Obstacle = { el: HTMLDivElement; x: number; y: number; vx: number; vy: number };
 
@@ -17,6 +16,7 @@ export default function JuegoBesito() {
   const goalEl = useRef<HTMLDivElement | null>(null);
   const obsLayer = useRef<HTMLDivElement | null>(null);
   const dims = useRef({ w: 0, h: 0 });
+  const sizeRef = useRef(56);
   const hero = useRef({ x: 0, y: 0, face: 1 });
   const goal = useRef({ x: 0, y: 0 });
   const obs = useRef<Obstacle[]>([]);
@@ -26,6 +26,7 @@ export default function JuegoBesito() {
   const scoreRef = useRef(0);
   const raf = useRef<number | null>(null);
 
+  const [size, setSize] = useState(56);
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
   const [status, setStatus] = useState<"playing" | "over">("playing");
@@ -34,8 +35,19 @@ export default function JuegoBesito() {
     if (el) el.style.transform = `translate(${x}px, ${y}px) scaleX(${face})`;
   }
 
+  function measure() {
+    const r = areaRef.current?.getBoundingClientRect();
+    if (r) {
+      dims.current = { w: r.width, h: r.height };
+      const s = sizeFor(r.width);
+      sizeRef.current = s;
+      setSize(s);
+    }
+  }
+
   function relocateGoal() {
     const { w, h } = dims.current;
+    const S = sizeRef.current;
     let x = 0;
     let y = 0;
     for (let i = 0; i < 12; i++) {
@@ -50,19 +62,14 @@ export default function JuegoBesito() {
   function addObstacle() {
     if (!obsLayer.current) return;
     const { w, h } = dims.current;
+    const S = sizeRef.current;
     const el = document.createElement("div");
     el.textContent = "🌶️";
-    el.style.cssText = "position:absolute;left:0;top:0;font-size:34px;line-height:1;will-change:transform;pointer-events:none;";
+    el.style.cssText = `position:absolute;left:0;top:0;font-size:${Math.round(S * 0.5)}px;line-height:1;will-change:transform;pointer-events:none;`;
     obsLayer.current.appendChild(el);
     const ang = Math.random() * Math.PI * 2;
-    const sp = 2.4 + Math.random() * 1.6 + scoreRef.current * 0.12;
-    obs.current.push({
-      el,
-      x: w * 0.5,
-      y: h * 0.3,
-      vx: Math.cos(ang) * sp,
-      vy: Math.sin(ang) * sp,
-    });
+    const sp = (2.4 + Math.random() * 1.6 + scoreRef.current * 0.12) * (S / 76);
+    obs.current.push({ el, x: w * 0.5, y: h * 0.3, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp });
   }
 
   function hearts(x: number, y: number) {
@@ -72,16 +79,16 @@ export default function JuegoBesito() {
       s.textContent = e;
       s.className = "burst-particle";
       const ang = (i / 5) * Math.PI * 2;
-      s.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:24px;pointer-events:none;--bx:${Math.cos(ang) * 55}px;--by:${Math.sin(ang) * 55 - 18}px;`;
+      s.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:${Math.round(sizeRef.current * 0.4)}px;pointer-events:none;--bx:${Math.cos(ang) * 55}px;--by:${Math.sin(ang) * 55 - 18}px;`;
       obsLayer.current!.appendChild(s);
       window.setTimeout(() => s.remove(), 1000);
     });
   }
 
   function init() {
-    const r = areaRef.current?.getBoundingClientRect();
-    if (r) dims.current = { w: r.width, h: r.height };
+    measure();
     const { w, h } = dims.current;
+    const S = sizeRef.current;
     hero.current = { x: w * 0.5 - S / 2, y: h * 0.8, face: 1 };
     obs.current.forEach((o) => o.el.remove());
     obs.current = [];
@@ -104,36 +111,33 @@ export default function JuegoBesito() {
       keys.current.add(k);
     };
     const ku = (e: KeyboardEvent) => keys.current.delete(e.key.toLowerCase());
-    const onResize = () => {
-      const r = areaRef.current?.getBoundingClientRect();
-      if (r) dims.current = { w: r.width, h: r.height };
-    };
     window.addEventListener("keydown", kd);
     window.addEventListener("keyup", ku);
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", measure);
 
     const loop = () => {
       const { w, h } = dims.current;
+      const S = sizeRef.current;
       if (w > 0 && !over.current) {
-        // --- Jugador ---
+        const pspeed = 4.6 * (S / 76);
         let vx = 0;
         let vy = 0;
-        const k = keys.current;
-        if (k.has("arrowleft") || k.has("a")) vx -= 1;
-        if (k.has("arrowright") || k.has("d")) vx += 1;
-        if (k.has("arrowup") || k.has("w")) vy -= 1;
-        if (k.has("arrowdown") || k.has("s")) vy += 1;
+        const ks = keys.current;
+        if (ks.has("arrowleft") || ks.has("a")) vx -= 1;
+        if (ks.has("arrowright") || ks.has("d")) vx += 1;
+        if (ks.has("arrowup") || ks.has("w")) vy -= 1;
+        if (ks.has("arrowdown") || ks.has("s")) vy += 1;
         if (vx || vy) {
           const l = Math.hypot(vx, vy);
-          vx = (vx / l) * PSPEED;
-          vy = (vy / l) * PSPEED;
+          vx = (vx / l) * pspeed;
+          vy = (vy / l) * pspeed;
         } else if (touch.current) {
           const dx = touch.current.x - (hero.current.x + S / 2);
           const dy = touch.current.y - (hero.current.y + S / 2);
           const d = Math.hypot(dx, dy);
-          if (d > 5) {
-            vx = (dx / d) * PSPEED;
-            vy = (dy / d) * PSPEED;
+          if (d > 4) {
+            vx = (dx / d) * pspeed;
+            vy = (dy / d) * pspeed;
           }
         }
         hero.current.x = Math.max(0, Math.min(w - S, hero.current.x + vx));
@@ -144,7 +148,6 @@ export default function JuegoBesito() {
         const hx = hero.current.x + S / 2;
         const hy = hero.current.y + S / 2;
 
-        // --- ¿Llegó al besito? ---
         if (Math.hypot(hx - (goal.current.x + S / 2), hy - (goal.current.y + S / 2)) < S * 0.7) {
           scoreRef.current += 1;
           setScore(scoreRef.current);
@@ -153,16 +156,16 @@ export default function JuegoBesito() {
           addObstacle();
         }
 
-        // --- Obstáculos ---
+        const r = S * 0.25;
         for (const o of obs.current) {
           o.x += o.vx;
           o.y += o.vy;
-          if (o.x <= 0 || o.x >= w - 30) o.vx *= -1;
-          if (o.y <= 0 || o.y >= h - 30) o.vy *= -1;
-          o.x = Math.max(0, Math.min(w - 30, o.x));
-          o.y = Math.max(0, Math.min(h - 30, o.y));
+          if (o.x <= 0 || o.x >= w - 2 * r) o.vx *= -1;
+          if (o.y <= 0 || o.y >= h - 2 * r) o.vy *= -1;
+          o.x = Math.max(0, Math.min(w - 2 * r, o.x));
+          o.y = Math.max(0, Math.min(h - 2 * r, o.y));
           o.el.style.transform = `translate(${o.x}px, ${o.y}px)`;
-          if (Math.hypot(o.x + 15 - hx, o.y + 15 - hy) < S * 0.46 + 14) {
+          if (Math.hypot(o.x + r - hx, o.y + r - hy) < S * 0.46 + r) {
             over.current = true;
             setBest((b) => Math.max(b, scoreRef.current));
             setStatus("over");
@@ -177,7 +180,7 @@ export default function JuegoBesito() {
       if (raf.current) cancelAnimationFrame(raf.current);
       window.removeEventListener("keydown", kd);
       window.removeEventListener("keyup", ku);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", measure);
       obs.current.forEach((o) => o.el.remove());
       obs.current = [];
     };
@@ -188,6 +191,8 @@ export default function JuegoBesito() {
     if (r) touch.current = { x: e.clientX - r.left, y: e.clientY - r.top };
   };
 
+  const wrap = { width: size, height: (size * 232) / 210 };
+
   return (
     <div>
       <div className="mb-3 flex items-center justify-between font-sans text-marron">
@@ -197,7 +202,7 @@ export default function JuegoBesito() {
 
       <div
         ref={areaRef}
-        className="patio-field relative h-[62svh] min-h-[340px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
+        className="patio-field relative h-[58svh] min-h-[300px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
         onPointerDown={(e) => {
           (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
           setTouchFromEvent(e);
@@ -210,20 +215,18 @@ export default function JuegoBesito() {
       >
         <div ref={obsLayer} className="pointer-events-none absolute inset-0" />
 
-        {/* Don Patacón (al que hay que llegar) */}
-        <div ref={goalEl} className="pointer-events-none absolute left-0 top-0" style={{ width: S, height: (S * 232) / 210 }}>
+        <div ref={goalEl} className="pointer-events-none absolute left-0 top-0" style={wrap}>
           <DonPatacon className="h-full w-full drop-shadow-md" />
-          <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-xl">💋</span>
+          <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-lg">💋</span>
         </div>
 
-        {/* La Patacona (jugadora) */}
-        <div ref={heroEl} className="pointer-events-none absolute left-0 top-0" style={{ width: S, height: (S * 232) / 210 }}>
+        <div ref={heroEl} className="pointer-events-none absolute left-0 top-0" style={wrap}>
           <DonaPatacona className="h-full w-full drop-shadow-md" />
         </div>
 
         {status === "over" && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 text-center text-crema backdrop-blur-sm">
-            <p className="font-display text-4xl font-bold italic">{t("¡Ay, el chile! 🌶️", "Ouch, the chili! 🌶️")}</p>
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 px-4 text-center text-crema backdrop-blur-sm">
+            <p className="font-display text-3xl font-bold italic sm:text-4xl">{t("¡Ay, el chile! 🌶️", "Ouch, the chili! 🌶️")}</p>
             <p className="mt-2 font-sans text-lg">
               {t(`Repartiste ${score} besito${score === 1 ? "" : "s"} 💋`, `You gave ${score} kiss${score === 1 ? "" : "es"} 💋`)}
             </p>

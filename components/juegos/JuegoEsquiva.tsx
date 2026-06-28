@@ -5,9 +5,9 @@ import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
 import { useLang } from "@/lib/i18n";
 
-const S = 76;
-const PSPEED = 4.6;
 const MAXFOES = 3;
+// Tamaño del personaje según el ancho del área (responsive). Velocidades ∝ tamaño.
+const sizeFor = (w: number) => Math.max(34, Math.min(76, Math.round(w * 0.11)));
 
 type Foe = { x: number; y: number; vx: number; vy: number; active: boolean };
 
@@ -17,6 +17,7 @@ export default function JuegoEsquiva() {
   const heroEl = useRef<HTMLDivElement | null>(null);
   const foeEls = useRef<(HTMLDivElement | null)[]>([]);
   const dims = useRef({ w: 0, h: 0 });
+  const sizeRef = useRef(60);
   const hero = useRef({ x: 0, y: 0, face: 1 });
   const heroV = useRef({ x: 0, y: 0 });
   const foes = useRef<Foe[]>([]);
@@ -27,6 +28,7 @@ export default function JuegoEsquiva() {
   const scoreRef = useRef(0);
   const raf = useRef<number | null>(null);
 
+  const [size, setSize] = useState(60);
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
   const [chasers, setChasers] = useState(1);
@@ -36,8 +38,19 @@ export default function JuegoEsquiva() {
     if (el) el.style.transform = `translate(${x}px, ${y}px) scaleX(${face})`;
   }
 
+  function measure() {
+    const r = areaRef.current?.getBoundingClientRect();
+    if (r) {
+      dims.current = { w: r.width, h: r.height };
+      const s = sizeFor(r.width);
+      sizeRef.current = s;
+      setSize(s);
+    }
+  }
+
   function farCorner() {
     const { w, h } = dims.current;
+    const S = sizeRef.current;
     const hx = hero.current.x + S / 2;
     const hy = hero.current.y + S / 2;
     const corners = [
@@ -48,16 +61,15 @@ export default function JuegoEsquiva() {
     ];
     corners.sort(
       (a, b) =>
-        Math.hypot(b.x + S / 2 - hx, b.y + S / 2 - hy) -
-        Math.hypot(a.x + S / 2 - hx, a.y + S / 2 - hy),
+        Math.hypot(b.x + S / 2 - hx, b.y + S / 2 - hy) - Math.hypot(a.x + S / 2 - hx, a.y + S / 2 - hy),
     );
     return corners[0];
   }
 
   function init() {
-    const r = areaRef.current?.getBoundingClientRect();
-    if (r) dims.current = { w: r.width, h: r.height };
+    measure();
     const { w, h } = dims.current;
+    const S = sizeRef.current;
     hero.current = { x: w * 0.5 - S / 2, y: h * 0.72, face: 1 };
     heroV.current = { x: 0, y: 0 };
     foes.current = Array.from({ length: MAXFOES }, (_, i) => ({
@@ -86,38 +98,37 @@ export default function JuegoEsquiva() {
       keys.current.add(k);
     };
     const ku = (e: KeyboardEvent) => keys.current.delete(e.key.toLowerCase());
-    const onResize = () => {
-      const r = areaRef.current?.getBoundingClientRect();
-      if (r) dims.current = { w: r.width, h: r.height };
-    };
     window.addEventListener("keydown", kd);
     window.addEventListener("keyup", ku);
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", measure);
 
     const loop = () => {
       const { w, h } = dims.current;
+      const S = sizeRef.current;
+      const k = S / 76; // factor de velocidad según tamaño
       if (w > 0 && !over.current) {
         const elapsed = (performance.now() - startT.current) / 1000;
+        const pspeed = 4.6 * k;
 
         // --- Jugador ---
         let vx = 0;
         let vy = 0;
-        const k = keys.current;
-        if (k.has("arrowleft") || k.has("a")) vx -= 1;
-        if (k.has("arrowright") || k.has("d")) vx += 1;
-        if (k.has("arrowup") || k.has("w")) vy -= 1;
-        if (k.has("arrowdown") || k.has("s")) vy += 1;
+        const ks = keys.current;
+        if (ks.has("arrowleft") || ks.has("a")) vx -= 1;
+        if (ks.has("arrowright") || ks.has("d")) vx += 1;
+        if (ks.has("arrowup") || ks.has("w")) vy -= 1;
+        if (ks.has("arrowdown") || ks.has("s")) vy += 1;
         if (vx || vy) {
           const l = Math.hypot(vx, vy);
-          vx = (vx / l) * PSPEED;
-          vy = (vy / l) * PSPEED;
+          vx = (vx / l) * pspeed;
+          vy = (vy / l) * pspeed;
         } else if (touch.current) {
           const dx = touch.current.x - (hero.current.x + S / 2);
           const dy = touch.current.y - (hero.current.y + S / 2);
           const d = Math.hypot(dx, dy);
-          if (d > 5) {
-            vx = (dx / d) * PSPEED;
-            vy = (dy / d) * PSPEED;
+          if (d > 4) {
+            vx = (dx / d) * pspeed;
+            vy = (dy / d) * pspeed;
           }
         }
         heroV.current = { x: vx, y: vy };
@@ -129,10 +140,9 @@ export default function JuegoEsquiva() {
         const px = hero.current.x + S / 2;
         const py = hero.current.y + S / 2;
 
-        // --- Perseguidores (refuerzos según el tiempo) ---
         const want = 1 + (elapsed > 14 ? 1 : 0) + (elapsed > 28 ? 1 : 0);
         if (want !== chasers) setChasers(want);
-        const es = Math.min(7, 3 + elapsed * 0.07); // aceleran con el tiempo
+        const es = Math.min(7, 3 + elapsed * 0.07) * k;
 
         for (let i = 0; i < MAXFOES; i++) {
           const f = foes.current[i];
@@ -155,7 +165,6 @@ export default function JuegoEsquiva() {
           const dx = px - ex;
           const dy = py - ey;
           const d = Math.hypot(dx, dy) || 1;
-          // Persecución con PREDICCIÓN: apunta a donde estarás (intercepta los círculos)
           const lead = Math.min(24, d / Math.max(es, 0.5));
           const tx = px + heroV.current.x * lead;
           const ty = py + heroV.current.y * lead;
@@ -189,7 +198,7 @@ export default function JuegoEsquiva() {
       if (raf.current) cancelAnimationFrame(raf.current);
       window.removeEventListener("keydown", kd);
       window.removeEventListener("keyup", ku);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", measure);
     };
   }, []);
 
@@ -197,6 +206,8 @@ export default function JuegoEsquiva() {
     const r = areaRef.current?.getBoundingClientRect();
     if (r) touch.current = { x: e.clientX - r.left, y: e.clientY - r.top };
   };
+
+  const wrap = { width: size, height: (size * 232) / 210 };
 
   return (
     <div>
@@ -210,7 +221,7 @@ export default function JuegoEsquiva() {
 
       <div
         ref={areaRef}
-        className="patio-field relative h-[62svh] min-h-[340px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
+        className="patio-field relative h-[58svh] min-h-[300px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
         onPointerDown={(e) => {
           (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
           setTouchFromEvent(e);
@@ -228,18 +239,18 @@ export default function JuegoEsquiva() {
               foeEls.current[i] = el;
             }}
             className="pointer-events-none absolute left-0 top-0"
-            style={{ width: S, height: (S * 232) / 210, opacity: i === 0 ? 1 : 0 }}
+            style={{ ...wrap, opacity: i === 0 ? 1 : 0 }}
           >
             <DonPatacon className="h-full w-full drop-shadow-md" />
           </div>
         ))}
-        <div ref={heroEl} className="pointer-events-none absolute left-0 top-0" style={{ width: S, height: (S * 232) / 210 }}>
+        <div ref={heroEl} className="pointer-events-none absolute left-0 top-0" style={wrap}>
           <DonaPatacona className="h-full w-full drop-shadow-md" />
         </div>
 
         {status === "over" && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-marron/70 text-center text-crema backdrop-blur-sm">
-            <p className="font-display text-4xl font-bold italic">{t("¡Te pillaron! 😵", "You got caught! 😵")}</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-marron/70 px-4 text-center text-crema backdrop-blur-sm">
+            <p className="font-display text-3xl font-bold italic sm:text-4xl">{t("¡Te pillaron! 😵", "You got caught! 😵")}</p>
             <p className="mt-2 font-sans text-lg">{t(`Aguantaste ${score} segundos`, `You lasted ${score} seconds`)}</p>
             <button
               type="button"

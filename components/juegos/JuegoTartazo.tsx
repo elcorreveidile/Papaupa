@@ -5,10 +5,9 @@ import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
 import { useLang } from "@/lib/i18n";
 
-const S = 76; // tamaño personajes
-const GAME_TIME = 30; // segundos
-const CAKE_SPEED = 10;
-const COOLDOWN = 180; // ms entre lanzamientos
+const GAME_TIME = 30;
+const COOLDOWN = 180;
+const sizeFor = (w: number) => Math.max(34, Math.min(76, Math.round(w * 0.11)));
 
 type Cake = { el: HTMLDivElement; x: number; y: number; vx: number; vy: number };
 
@@ -18,6 +17,7 @@ export default function JuegoTartazo() {
   const cakeLayer = useRef<HTMLDivElement | null>(null);
   const foeEl = useRef<HTMLDivElement | null>(null);
   const dims = useRef({ w: 0, h: 0 });
+  const sizeRef = useRef(60);
   const foe = useRef({ x: 0, y: 0, vx: 2.6, vy: 1.8 });
   const cakes = useRef<Cake[]>([]);
   const aim = useRef({ x: 0, y: 0 });
@@ -26,13 +26,24 @@ export default function JuegoTartazo() {
   const over = useRef(false);
   const raf = useRef<number | null>(null);
 
+  const [size, setSize] = useState(60);
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(GAME_TIME);
   const [best, setBest] = useState(0);
   const [status, setStatus] = useState<"playing" | "over">("playing");
 
+  function measure() {
+    const r = areaRef.current?.getBoundingClientRect();
+    if (r) {
+      dims.current = { w: r.width, h: r.height };
+      const s = sizeFor(r.width);
+      sizeRef.current = s;
+      setSize(s);
+    }
+  }
+
   function origin() {
-    return { x: dims.current.w / 2, y: dims.current.h - 56 };
+    return { x: dims.current.w / 2, y: dims.current.h - sizeRef.current * 0.7 };
   }
 
   function throwCake(tx: number, ty: number) {
@@ -44,11 +55,13 @@ export default function JuegoTartazo() {
     const dx = tx - o.x;
     const dy = ty - o.y;
     const d = Math.hypot(dx, dy) || 1;
+    const speed = 10 * (sizeRef.current / 76);
+    const fs = Math.round(sizeRef.current * 0.42);
     const el = document.createElement("div");
     el.textContent = "🎂";
-    el.style.cssText = "position:absolute;left:0;top:0;font-size:30px;line-height:1;will-change:transform;pointer-events:none;";
+    el.style.cssText = `position:absolute;left:0;top:0;font-size:${fs}px;line-height:1;will-change:transform;pointer-events:none;`;
     cakeLayer.current.appendChild(el);
-    cakes.current.push({ el, x: o.x, y: o.y, vx: (dx / d) * CAKE_SPEED, vy: (dy / d) * CAKE_SPEED });
+    cakes.current.push({ el, x: o.x, y: o.y, vx: (dx / d) * speed, vy: (dy / d) * speed });
   }
 
   function splat(x: number, y: number) {
@@ -56,16 +69,16 @@ export default function JuegoTartazo() {
     const s = document.createElement("div");
     s.textContent = "💥";
     s.className = "burst-particle";
-    s.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:30px;--bx:0px;--by:-26px;pointer-events:none;`;
+    s.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:${Math.round(sizeRef.current * 0.42)}px;--bx:0px;--by:-26px;pointer-events:none;`;
     cakeLayer.current.appendChild(s);
     window.setTimeout(() => s.remove(), 1000);
   }
 
   function init() {
-    const r = areaRef.current?.getBoundingClientRect();
-    if (r) dims.current = { w: r.width, h: r.height };
+    measure();
     const { w } = dims.current;
-    foe.current = { x: w * 0.5 - S / 2, y: 30, vx: 2.8, vy: 1.7 };
+    const k = sizeRef.current / 76;
+    foe.current = { x: w * 0.5 - sizeRef.current / 2, y: 24, vx: 2.8 * k, vy: 1.7 * k };
     cakes.current.forEach((c) => c.el.remove());
     cakes.current = [];
     aim.current = { x: w / 2, y: 40 };
@@ -85,28 +98,24 @@ export default function JuegoTartazo() {
         throwCake(aim.current.x, aim.current.y);
       }
     };
-    const onResize = () => {
-      const r = areaRef.current?.getBoundingClientRect();
-      if (r) dims.current = { w: r.width, h: r.height };
-    };
     window.addEventListener("keydown", onKey);
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", measure);
 
     let scoreLocal = 0;
     const loop = () => {
       const { w, h } = dims.current;
+      const S = sizeRef.current;
       if (w > 0 && !over.current) {
         const elapsed = (performance.now() - startT.current) / 1000;
         const left = Math.max(0, GAME_TIME - elapsed);
         const lt = Math.ceil(left);
-        setTime((t) => (t !== lt ? lt : t));
+        setTime((tm) => (tm !== lt ? lt : tm));
         if (left <= 0) {
           over.current = true;
           setBest((b) => Math.max(b, scoreLocal));
           setStatus("over");
         }
 
-        // Don Patacón se mueve (zona superior)
         const f = foe.current;
         const limitY = h * 0.58;
         f.x += f.vx;
@@ -117,15 +126,15 @@ export default function JuegoTartazo() {
         else if (f.y >= limitY) { f.y = limitY; f.vy = -Math.abs(f.vy); }
         if (foeEl.current) foeEl.current.style.transform = `translate(${f.x}px, ${f.y}px) scaleX(${f.vx < 0 ? -1 : 1})`;
 
-        // Tartas
         const fcx = f.x + S / 2;
         const fcy = f.y + S / 2;
         for (let i = cakes.current.length - 1; i >= 0; i--) {
           const c = cakes.current[i];
           c.x += c.vx;
           c.y += c.vy;
-          c.el.style.transform = `translate(${c.x - 15}px, ${c.y - 15}px)`;
-          const hit = Math.hypot(c.x - fcx, c.y - fcy) < S * 0.5 + 12;
+          const r = S * 0.21;
+          c.el.style.transform = `translate(${c.x - r}px, ${c.y - r}px)`;
+          const hit = Math.hypot(c.x - fcx, c.y - fcy) < S * 0.5 + r;
           const outside = c.x < -30 || c.x > w + 30 || c.y < -30 || c.y > h + 30;
           if (hit || outside) {
             if (hit) {
@@ -145,7 +154,7 @@ export default function JuegoTartazo() {
     return () => {
       if (raf.current) cancelAnimationFrame(raf.current);
       window.removeEventListener("keydown", onKey);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", measure);
       cakes.current.forEach((c) => c.el.remove());
       cakes.current = [];
     };
@@ -155,6 +164,8 @@ export default function JuegoTartazo() {
     const r = areaRef.current?.getBoundingClientRect();
     return r ? { x: e.clientX - r.left, y: e.clientY - r.top } : { x: 0, y: 0 };
   };
+
+  const wrap = { width: size, height: (size * 232) / 210 };
 
   return (
     <div>
@@ -166,7 +177,7 @@ export default function JuegoTartazo() {
 
       <div
         ref={areaRef}
-        className="patio-field relative h-[62svh] min-h-[340px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
+        className="patio-field relative h-[58svh] min-h-[300px] w-full touch-none select-none overflow-hidden rounded-3xl border-4 border-marron/20"
         onPointerMove={(e) => (aim.current = pointerXY(e))}
         onPointerDown={(e) => {
           const p = pointerXY(e);
@@ -174,22 +185,19 @@ export default function JuegoTartazo() {
           throwCake(p.x, p.y);
         }}
       >
-        {/* Capa de tartas (DOM imperativo) */}
         <div ref={cakeLayer} className="pointer-events-none absolute inset-0" />
 
-        {/* Don Patacón (objetivo) */}
-        <div ref={foeEl} className="pointer-events-none absolute left-0 top-0" style={{ width: S, height: (S * 232) / 210 }}>
+        <div ref={foeEl} className="pointer-events-none absolute left-0 top-0" style={wrap}>
           <DonPatacon className="h-full w-full drop-shadow-md" />
         </div>
 
-        {/* La Patacona (lanzadora, abajo en el centro) */}
-        <div className="pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2" style={{ width: S, height: (S * 232) / 210 }}>
+        <div className="pointer-events-none absolute bottom-1 left-1/2 -translate-x-1/2" style={wrap}>
           <DonaPatacona className="h-full w-full drop-shadow-md" />
         </div>
 
         {status === "over" && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 text-center text-crema backdrop-blur-sm">
-            <p className="font-display text-4xl font-bold italic">{t("¡Se acabó el tiempo!", "Time's up!")}</p>
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 px-4 text-center text-crema backdrop-blur-sm">
+            <p className="font-display text-3xl font-bold italic sm:text-4xl">{t("¡Se acabó el tiempo!", "Time's up!")}</p>
             <p className="mt-2 font-sans text-lg">
               {t(`Le diste ${score} tartazo${score === 1 ? "" : "s"} 🎂`, `You landed ${score} cake${score === 1 ? "" : "s"} 🎂`)}
             </p>

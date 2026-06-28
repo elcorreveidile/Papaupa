@@ -16,9 +16,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Papaupa · Retro Fusión Food",
+  metadataBase: new URL("https://papaupa.espanias.com"),
+  title: "Papaupa · Restaurante colombiano-mediterráneo en el Realejo (Granada)",
   description:
-    "Restaurante colombiano-mediterráneo en el Realejo, Granada. Comida casera llena de cariño. ¿¿Pasas marica??",
+    "Cocina colombiano-mediterránea casera y sin prisa en el Realejo (Granada): arepas, ceviches, patacones y pescados, con producto de calidad y opciones veg y sin gluten.",
+  openGraph: {
+    title: "Papaupa · Retro Fusión Food",
+    description:
+      "Cocina colombiano-mediterránea casera en el Realejo (Granada): arepas, ceviches, patacones y pescados.",
+    locale: "es_ES",
+    type: "website",
+    images: ["/images/fachada.jpg"],
+  },
 };
 
 export default function RootLayout({

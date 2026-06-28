@@ -1,19 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SESSION_COOKIE, verifySession } from "@/lib/auth/session";
 
-/**
- * El visitante que YA ha pasado por la puerta (cookie `papaupa_visited`) va
- * directo a la Home real: redirigimos `/` → `/inicio` en el servidor, sin que
- * llegue a ver el splash. La primera visita (sin cookie) sí ve la puerta/juego.
- */
-export function middleware(request: NextRequest) {
-  if (request.cookies.has("papaupa_visited")) {
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Puerta de entrada: quien ya ha pasado (cookie) va directo a /inicio.
+  if (pathname === "/" && request.cookies.has("papaupa_visited")) {
     const url = request.nextUrl.clone();
     url.pathname = "/inicio";
     return NextResponse.redirect(url);
   }
+
+  // Área de administración protegida (excepto el propio login).
+  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+    const session = await verifySession(request.cookies.get(SESSION_COOKIE)?.value);
+    if (!session) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: "/",
+  matcher: ["/", "/admin/:path*"],
 };

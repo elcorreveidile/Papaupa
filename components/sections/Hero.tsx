@@ -18,7 +18,14 @@ export default function Hero() {
           </h1>
           <div className="rainbow-rule mt-5 h-1 w-40 rounded-full" />
 
-          <p className="mt-7 max-w-md font-sans text-lg leading-relaxed text-marron/80">
+          <p className="mt-6 font-display text-xl font-medium italic text-marron sm:text-2xl">
+            {t(
+              "Cocina colombiano-mediterránea, casera y sin prisa.",
+              "Colombian-Mediterranean home cooking, slow and from scratch.",
+            )}
+          </p>
+
+          <p className="mt-4 max-w-md font-sans text-lg leading-relaxed text-marron/80">
             {t(
               "Papaupa es más que un restaurante. Es donde Paco, Margarita y su equipo cocinan con cariño cada plato, respetando los tiempos naturales y el sabor auténtico de Colombia y el Mediterráneo.",
               "Papaupa is more than a restaurant. It's where Paco, Margarita and their team cook every dish with love, respecting natural rhythms and the authentic flavours of Colombia and the Mediterranean.",
