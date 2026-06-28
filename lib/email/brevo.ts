@@ -1,6 +1,6 @@
 const BREVO_API = "https://api.brevo.com/v3/smtp/email";
 
-type EmailOpts = { to: string; toName?: string; subject: string; html: string };
+type EmailOpts = { to: string; toName?: string; subject: string; html: string; text?: string };
 
 /**
  * Envía un email transaccional vía Brevo. En desarrollo (sin BREVO_API_KEY)
@@ -25,6 +25,7 @@ export async function enviarEmail(opts: EmailOpts): Promise<{ sent: boolean; dev
       to: [{ email: opts.to, name: opts.toName }],
       subject: opts.subject,
       htmlContent: opts.html,
+      ...(opts.text ? { textContent: opts.text } : {}),
     }),
   });
 
