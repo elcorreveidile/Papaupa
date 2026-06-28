@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
 import { useLang } from "@/lib/i18n";
+import { BotonEmpezar, CuentaAtras, useCuentaAtras } from "./Inicio";
 
 const MAXFOES = 3;
 // Tamaño del personaje según el ancho del área (responsive). Velocidades ∝ tamaño.
@@ -25,6 +26,7 @@ export default function JuegoEsquiva() {
   const touch = useRef<{ x: number; y: number } | null>(null);
   const startT = useRef(0);
   const over = useRef(false);
+  const running = useRef(false);
   const scoreRef = useRef(0);
   const raf = useRef<number | null>(null);
 
@@ -32,7 +34,17 @@ export default function JuegoEsquiva() {
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
   const [chasers, setChasers] = useState(1);
-  const [status, setStatus] = useState<"playing" | "over">("playing");
+  const [status, setStatus] = useState<"ready" | "playing" | "over">("ready");
+
+  function empezar() {
+    startT.current = performance.now();
+    scoreRef.current = 0;
+    setScore(0);
+    over.current = false;
+    running.current = true;
+    setStatus("playing");
+  }
+  const { count, lanzar } = useCuentaAtras(empezar);
 
   function place(el: HTMLDivElement | null, x: number, y: number, face = 1) {
     if (el) el.style.transform = `translate(${x}px, ${y}px) scaleX(${face})`;
@@ -79,14 +91,19 @@ export default function JuegoEsquiva() {
       vy: 0,
       active: i === 0,
     }));
-    startT.current = performance.now();
     scoreRef.current = 0;
     over.current = false;
+    running.current = false;
     setScore(0);
     setChasers(1);
-    setStatus("playing");
+    setStatus("ready");
     place(heroEl.current, hero.current.x, hero.current.y);
     foes.current.forEach((f, i) => place(foeEls.current[i], f.x, f.y));
+  }
+
+  function reiniciar() {
+    init();
+    lanzar();
   }
 
   useEffect(() => {
@@ -106,7 +123,7 @@ export default function JuegoEsquiva() {
       const { w, h } = dims.current;
       const S = sizeRef.current;
       const k = S / 76; // factor de velocidad según tamaño
-      if (w > 0 && !over.current) {
+      if (w > 0 && running.current && !over.current) {
         const elapsed = (performance.now() - startT.current) / 1000;
         const pspeed = 4.6 * k;
 
@@ -179,6 +196,7 @@ export default function JuegoEsquiva() {
 
           if (d < S * 0.58) {
             over.current = true;
+            running.current = false;
             setBest((b) => Math.max(b, scoreRef.current));
             setStatus("over");
           }
@@ -248,13 +266,21 @@ export default function JuegoEsquiva() {
           <DonaPatacona className="h-full w-full drop-shadow-md" />
         </div>
 
+        {status === "ready" && count === null && (
+          <BotonEmpezar
+            onStart={lanzar}
+            pista={t("Esquiva a Don Patacón cuando empiece a perseguirte.", "Dodge Don Patacón once he starts chasing you.")}
+          />
+        )}
+        {count !== null && <CuentaAtras n={count} />}
+
         {status === "over" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-marron/70 px-4 text-center text-crema backdrop-blur-sm">
             <p className="font-display text-3xl font-bold italic sm:text-4xl">{t("¡Te pillaron! 😵", "You got caught! 😵")}</p>
             <p className="mt-2 font-sans text-lg">{t(`Aguantaste ${score} segundos`, `You lasted ${score} seconds`)}</p>
             <button
               type="button"
-              onClick={init}
+              onClick={reiniciar}
               className="mt-6 rounded-full bg-mostaza px-7 py-3 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
             >
               🔁 {t("Jugar otra vez", "Play again")}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
 import { useLang } from "@/lib/i18n";
+import { BotonEmpezar, CuentaAtras, useCuentaAtras } from "./Inicio";
 
 const GAME_TIME = 30;
 const COOLDOWN = 180;
@@ -24,13 +25,26 @@ export default function JuegoTartazo() {
   const lastThrow = useRef(0);
   const startT = useRef(0);
   const over = useRef(false);
+  const running = useRef(false);
+  const scoreRef = useRef(0);
   const raf = useRef<number | null>(null);
 
   const [size, setSize] = useState(60);
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(GAME_TIME);
   const [best, setBest] = useState(0);
-  const [status, setStatus] = useState<"playing" | "over">("playing");
+  const [status, setStatus] = useState<"ready" | "playing" | "over">("ready");
+
+  function empezar() {
+    startT.current = performance.now();
+    scoreRef.current = 0;
+    setScore(0);
+    setTime(GAME_TIME);
+    over.current = false;
+    running.current = true;
+    setStatus("playing");
+  }
+  const { count, lanzar } = useCuentaAtras(empezar);
 
   function measure() {
     const r = areaRef.current?.getBoundingClientRect();
@@ -47,7 +61,7 @@ export default function JuegoTartazo() {
   }
 
   function throwCake(tx: number, ty: number) {
-    if (over.current || !cakeLayer.current) return;
+    if (over.current || !running.current || !cakeLayer.current) return;
     const now = performance.now();
     if (now - lastThrow.current < COOLDOWN) return;
     lastThrow.current = now;
@@ -82,11 +96,16 @@ export default function JuegoTartazo() {
     cakes.current.forEach((c) => c.el.remove());
     cakes.current = [];
     aim.current = { x: w / 2, y: 40 };
-    startT.current = performance.now();
     over.current = false;
+    running.current = false;
     setScore(0);
     setTime(GAME_TIME);
-    setStatus("playing");
+    setStatus("ready");
+  }
+
+  function reiniciar() {
+    init();
+    lanzar();
   }
 
   useEffect(() => {
@@ -101,18 +120,18 @@ export default function JuegoTartazo() {
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", measure);
 
-    let scoreLocal = 0;
     const loop = () => {
       const { w, h } = dims.current;
       const S = sizeRef.current;
-      if (w > 0 && !over.current) {
+      if (w > 0 && running.current && !over.current) {
         const elapsed = (performance.now() - startT.current) / 1000;
         const left = Math.max(0, GAME_TIME - elapsed);
         const lt = Math.ceil(left);
         setTime((tm) => (tm !== lt ? lt : tm));
         if (left <= 0) {
           over.current = true;
-          setBest((b) => Math.max(b, scoreLocal));
+          running.current = false;
+          setBest((b) => Math.max(b, scoreRef.current));
           setStatus("over");
         }
 
@@ -138,8 +157,8 @@ export default function JuegoTartazo() {
           const outside = c.x < -30 || c.x > w + 30 || c.y < -30 || c.y > h + 30;
           if (hit || outside) {
             if (hit) {
-              scoreLocal += 1;
-              setScore(scoreLocal);
+              scoreRef.current += 1;
+              setScore(scoreRef.current);
               splat(c.x, c.y);
             }
             c.el.remove();
@@ -195,6 +214,14 @@ export default function JuegoTartazo() {
           <DonaPatacona className="h-full w-full drop-shadow-md" />
         </div>
 
+        {status === "ready" && count === null && (
+          <BotonEmpezar
+            onStart={lanzar}
+            pista={t("Lánzale tartas a Don Patacón. Tienes 30 segundos.", "Throw cakes at Don Patacón. You've got 30 seconds.")}
+          />
+        )}
+        {count !== null && <CuentaAtras n={count} />}
+
         {status === "over" && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 px-4 text-center text-crema backdrop-blur-sm">
             <p className="font-display text-3xl font-bold italic sm:text-4xl">{t("¡Se acabó el tiempo!", "Time's up!")}</p>
@@ -203,7 +230,7 @@ export default function JuegoTartazo() {
             </p>
             <button
               type="button"
-              onClick={init}
+              onClick={reiniciar}
               className="mt-6 rounded-full bg-mostaza px-7 py-3 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
             >
               🔁 {t("Otra ronda", "Another round")}

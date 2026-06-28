@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
 import { useLang } from "@/lib/i18n";
+import { BotonEmpezar, CuentaAtras, useCuentaAtras } from "./Inicio";
 
 const sizeFor = (w: number) => Math.max(34, Math.min(72, Math.round(w * 0.105)));
 
@@ -23,13 +24,21 @@ export default function JuegoBesito() {
   const keys = useRef<Set<string>>(new Set());
   const touch = useRef<{ x: number; y: number } | null>(null);
   const over = useRef(false);
+  const running = useRef(false);
   const scoreRef = useRef(0);
   const raf = useRef<number | null>(null);
 
   const [size, setSize] = useState(56);
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
-  const [status, setStatus] = useState<"playing" | "over">("playing");
+  const [status, setStatus] = useState<"ready" | "playing" | "over">("ready");
+
+  function empezar() {
+    over.current = false;
+    running.current = true;
+    setStatus("playing");
+  }
+  const { count, lanzar } = useCuentaAtras(empezar);
 
   function place(el: HTMLDivElement | null, x: number, y: number, face = 1) {
     if (el) el.style.transform = `translate(${x}px, ${y}px) scaleX(${face})`;
@@ -94,12 +103,18 @@ export default function JuegoBesito() {
     obs.current = [];
     scoreRef.current = 0;
     over.current = false;
+    running.current = false;
     setScore(0);
-    setStatus("playing");
+    setStatus("ready");
     place(heroEl.current, hero.current.x, hero.current.y);
     relocateGoal();
     addObstacle();
     addObstacle();
+  }
+
+  function reiniciar() {
+    init();
+    lanzar();
   }
 
   useEffect(() => {
@@ -118,7 +133,7 @@ export default function JuegoBesito() {
     const loop = () => {
       const { w, h } = dims.current;
       const S = sizeRef.current;
-      if (w > 0 && !over.current) {
+      if (w > 0 && running.current && !over.current) {
         const pspeed = 4.6 * (S / 76);
         let vx = 0;
         let vy = 0;
@@ -167,6 +182,7 @@ export default function JuegoBesito() {
           o.el.style.transform = `translate(${o.x}px, ${o.y}px)`;
           if (Math.hypot(o.x + r - hx, o.y + r - hy) < S * 0.46 + r) {
             over.current = true;
+            running.current = false;
             setBest((b) => Math.max(b, scoreRef.current));
             setStatus("over");
           }
@@ -224,6 +240,14 @@ export default function JuegoBesito() {
           <DonaPatacona className="h-full w-full drop-shadow-md" />
         </div>
 
+        {status === "ready" && count === null && (
+          <BotonEmpezar
+            onStart={lanzar}
+            pista={t("Lleva a la Patacona hasta Don Patacón y esquiva los chiles.", "Guide the Patacona to Don Patacón and dodge the chilies.")}
+          />
+        )}
+        {count !== null && <CuentaAtras n={count} />}
+
         {status === "over" && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 px-4 text-center text-crema backdrop-blur-sm">
             <p className="font-display text-3xl font-bold italic sm:text-4xl">{t("¡Ay, el chile! 🌶️", "Ouch, the chili! 🌶️")}</p>
@@ -232,7 +256,7 @@ export default function JuegoBesito() {
             </p>
             <button
               type="button"
-              onClick={init}
+              onClick={reiniciar}
               className="mt-6 rounded-full bg-mostaza px-7 py-3 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
             >
               🔁 {t("Otra vez", "Again")}
