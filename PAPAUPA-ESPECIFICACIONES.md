@@ -1113,6 +1113,5 @@ Horarios:    Lunes-Jueves 13-23h | Viernes-Sábado 13-00h | Domingo 13-22h
 
 ---
 
-**Última actualización:** Junio 2024  
+**Última actualización:** Junio 2026  
 **Versión:** 1.0 - Ready for Development  
-**Preparado para:** Claude Code (Anthropic)
