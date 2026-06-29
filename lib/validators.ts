@@ -22,6 +22,10 @@ export const reservaSchema = z.object({
 
 export type ReservaInput = z.infer<typeof reservaSchema>;
 
+export const newsletterSchema = z.object({
+  email: z.string().trim().email(),
+});
+
 export const contactoSchema = z.object({
   nombre: z.string().trim().min(2).max(120),
   email: z.string().trim().email(),
