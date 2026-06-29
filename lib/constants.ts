@@ -8,7 +8,6 @@ export const PACO_WHATSAPP = "34958991844";
 export const DIRECCION = "Calle de los Molinos 16, Realejo, Granada";
 export const TELEFONO = "+34 958 99 18 44";
 
-// A dónde llegan los mensajes del formulario de contacto.
-// La web es SORPRESA para Paco: de momento al superadmin. Cambiar a Paco al publicar.
-export const CONTACTO_EMAIL = "informa@blablaele.com";
-export const CONTACTO_NOMBRE = "Papaupa";
+// A dónde llega el aviso de un nuevo mensaje del formulario de contacto.
+export const CONTACTO_EMAIL = "papauparetrofusionfood@gmail.com"; // Paco
+export const CONTACTO_NOMBRE = "Paco";
