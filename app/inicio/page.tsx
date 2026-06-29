@@ -3,6 +3,7 @@
 import Header from "@/components/layout/Header";
 import Hero from "@/components/sections/Hero";
 import Contacto from "@/components/sections/Contacto";
+import SiteFooter from "@/components/layout/SiteFooter";
 import { useLang } from "@/lib/i18n";
 
 export default function Inicio() {
@@ -23,15 +24,7 @@ export default function Inicio() {
 
       <Contacto />
 
-      <footer className="bg-marron py-8 text-center text-crema/80">
-        <p className="font-display text-xl italic">Papaupa · Retro Fusión Food</p>
-        <p className="mt-1 font-sans text-sm">
-          {t("Calle de los Molinos 16, Granada", "Calle de los Molinos 16, Granada")} ·{" "}
-          <a href="https://www.instagram.com/papauparetrofusionfood/" target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:text-mostaza hover:underline">
-            @papauparetrofusionfood
-          </a>
-        </p>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
