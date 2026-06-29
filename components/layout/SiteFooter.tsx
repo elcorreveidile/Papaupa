@@ -65,14 +65,15 @@ export default function SiteFooter() {
 
       {/* Crédito juguetón: pasa el ratón cerca y aparece un bichito bailando + frase aleatoria. */}
       <div
-        className="relative mt-5 inline-flex flex-col items-center"
+        className="relative mt-5 flex flex-col items-center"
         onMouseEnter={revolver}
         onMouseLeave={() => setHover(false)}
       >
-        {/* Globo de diálogo con la frase aleatoria */}
+        {/* Globo de diálogo con la frase aleatoria.
+            Ancho limitado al viewport para que en móvil no se salga por los lados. */}
         <div
           aria-hidden={!hover}
-          className={`pointer-events-none absolute bottom-full left-1/2 mb-3 w-max max-w-[18rem] -translate-x-1/2 ${
+          className={`pointer-events-none absolute bottom-full left-1/2 mb-3 w-max max-w-[min(20rem,calc(100vw-1.5rem))] -translate-x-1/2 ${
             hover ? "animate-bocadillo" : "hidden"
           }`}
         >
