@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n";
 import ReproductorCancion from "@/components/audio/ReproductorCancion";
 import CookieBanner from "@/components/legal/CookieBanner";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import RestaurantJsonLd from "@/components/seo/RestaurantJsonLd";
 import "./globals.css";
 
@@ -65,6 +66,7 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
           <ReproductorCancion />
+          <ScrollToTop />
           <CookieBanner />
         </LanguageProvider>
       </body>
