@@ -12,7 +12,7 @@ import { useLang } from "@/lib/i18n";
  * Para activarlo: sube el mp3 a /public/audio/ y pon CANCION.activa = true.
  */
 const CANCION = {
-  activa: false, // ← cambiar a true cuando esté el mp3
+  activa: true,
   src: "/audio/cumbia-papaupa.mp3",
 };
 
