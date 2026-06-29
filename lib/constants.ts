@@ -9,5 +9,8 @@ export const DIRECCION = "Calle de los Molinos 16, Realejo, Granada";
 export const TELEFONO = "+34 958 99 18 44";
 
 // A dónde llega el aviso de un nuevo mensaje del formulario de contacto.
-export const CONTACTO_EMAIL = "papauparetrofusionfood@gmail.com"; // Paco
-export const CONTACTO_NOMBRE = "Paco";
+// SORPRESA: de momento NO se avisa a Paco. El mensaje se guarda en BD y se ve en
+// Admin → Mensajes; el aviso va al superadmin. Para reactivar a Paco cuando se
+// publique, cambiar CONTACTO_EMAIL a "papauparetrofusionfood@gmail.com".
+export const CONTACTO_EMAIL = "informa@blablaele.com"; // superadmin (Javier)
+export const CONTACTO_NOMBRE = "Papaupa";

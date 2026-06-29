@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Hero from "@/components/sections/Hero";
+import NuestraHistoria from "@/components/sections/NuestraHistoria";
+import Testimonios from "@/components/sections/Testimonios";
 import Contacto from "@/components/sections/Contacto";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { useLang } from "@/lib/i18n";
@@ -44,6 +46,8 @@ export default function Inicio() {
       <Header />
       <Hero />
 
+      <NuestraHistoria />
+
       <section id="descubre" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-16 sm:py-20">
         <p className="text-center font-sans text-xs uppercase tracking-[0.3em] text-terracota">
           {t("Descubre Papaupa", "Discover Papaupa")}
@@ -68,6 +72,8 @@ export default function Inicio() {
           ))}
         </div>
       </section>
+
+      <Testimonios />
 
       <Contacto />
 
