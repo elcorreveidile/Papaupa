@@ -21,3 +21,11 @@ export const reservaSchema = z.object({
 });
 
 export type ReservaInput = z.infer<typeof reservaSchema>;
+
+export const puntuacionSchema = z.object({
+  juego: z.enum(["esquiva", "tartazo", "besito"]),
+  iniciales: z.string().trim().min(1).max(3),
+  puntos: z.number().int().min(0).max(1000000),
+});
+
+export type PuntuacionInput = z.infer<typeof puntuacionSchema>;

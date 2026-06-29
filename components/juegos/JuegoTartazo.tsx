@@ -5,6 +5,7 @@ import DonPatacon from "@/components/landing/DonPatacon";
 import DonaPatacona from "@/components/landing/DonaPatacona";
 import { useLang } from "@/lib/i18n";
 import { BotonEmpezar, CuentaAtras, useCuentaAtras } from "./Inicio";
+import Podio from "./Podio";
 
 const GAME_TIME = 30;
 const COOLDOWN = 180;
@@ -223,15 +224,16 @@ export default function JuegoTartazo() {
         {count !== null && <CuentaAtras n={count} />}
 
         {status === "over" && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-marron/70 px-4 text-center text-crema backdrop-blur-sm">
-            <p className="font-display text-3xl font-bold italic sm:text-4xl">{t("¡Se acabó el tiempo!", "Time's up!")}</p>
-            <p className="mt-2 font-sans text-lg">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1 overflow-y-auto bg-marron/70 px-4 py-4 text-center text-crema backdrop-blur-sm">
+            <p className="font-display text-2xl font-bold italic sm:text-3xl">{t("¡Se acabó el tiempo!", "Time's up!")}</p>
+            <p className="font-sans">
               {t(`Le diste ${score} tartazo${score === 1 ? "" : "s"} 🎂`, `You landed ${score} cake${score === 1 ? "" : "s"} 🎂`)}
             </p>
+            <Podio juego="tartazo" puntos={score} />
             <button
               type="button"
               onClick={reiniciar}
-              className="mt-6 rounded-full bg-mostaza px-7 py-3 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
+              className="mt-4 rounded-full bg-mostaza px-7 py-2.5 font-sans text-lg font-bold text-marron transition-transform hover:scale-105 active:scale-95"
             >
               🔁 {t("Otra ronda", "Another round")}
             </button>

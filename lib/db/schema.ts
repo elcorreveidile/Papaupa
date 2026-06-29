@@ -91,9 +91,19 @@ export const galeria = pgTable("galeria", {
   creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
 });
 
+/** Mejores puntuaciones de los juegos del patio (top 3 por juego). */
+export const puntuaciones = pgTable("puntuaciones", {
+  id: serial("id").primaryKey(),
+  juego: varchar("juego", { length: 16 }).notNull(), // esquiva | tartazo | besito
+  iniciales: varchar("iniciales", { length: 3 }).notNull(),
+  puntos: integer("puntos").notNull(),
+  creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export type Usuario = typeof usuarios.$inferSelect;
 export type Reserva = typeof reservas.$inferSelect;
 export type Foto = typeof galeria.$inferSelect;
+export type Puntuacion = typeof puntuaciones.$inferSelect;
 export type Evento = typeof eventos.$inferSelect;
 export type NuevoEvento = typeof eventos.$inferInsert;
 export type Resena = typeof resenas.$inferSelect;
