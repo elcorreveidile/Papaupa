@@ -2,9 +2,8 @@
 
 import { useLang } from "@/lib/i18n";
 import ContactoForm from "./ContactoForm";
+import MapaConsentido from "@/components/legal/MapaConsentido";
 
-const MAPS_EMBED =
-  "https://www.google.com/maps?q=Papaupa,+Calle+de+los+Molinos+16,+18009+Granada&output=embed";
 const MAPS_LINK =
   "https://www.google.com/maps/search/?api=1&query=Papaupa+Calle+de+los+Molinos+16+Granada";
 
@@ -20,14 +19,7 @@ export default function Contacto() {
 
         <div className="mt-10 grid gap-10 md:grid-cols-2">
           <div className="overflow-hidden rounded-3xl border border-marron/15 shadow-lg">
-            <iframe
-              title={t("Mapa de Papaupa", "Map of Papaupa")}
-              src={MAPS_EMBED}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-80 w-full md:h-full"
-              style={{ border: 0, minHeight: "20rem" }}
-            />
+            <MapaConsentido />
           </div>
 
           <div className="flex flex-col gap-7">

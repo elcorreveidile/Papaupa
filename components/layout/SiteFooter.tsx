@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 
 const VERSION = "V.1.0";
@@ -62,6 +63,21 @@ export default function SiteFooter() {
           @papauparetrofusionfood
         </a>
       </p>
+
+      {/* Enlaces legales */}
+      <nav className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-sans text-xs text-crema/60">
+        <Link href="/aviso-legal" className="underline-offset-4 hover:text-mostaza hover:underline">
+          {t("Aviso legal", "Legal notice")}
+        </Link>
+        <span className="text-crema/30">·</span>
+        <Link href="/privacidad" className="underline-offset-4 hover:text-mostaza hover:underline">
+          {t("Privacidad", "Privacy")}
+        </Link>
+        <span className="text-crema/30">·</span>
+        <Link href="/cookies" className="underline-offset-4 hover:text-mostaza hover:underline">
+          {t("Cookies", "Cookies")}
+        </Link>
+      </nav>
 
       {/* Crédito juguetón: pasa el ratón cerca y aparece un bichito bailando + frase aleatoria. */}
       <div
