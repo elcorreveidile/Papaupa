@@ -46,8 +46,14 @@ export default function ReproductorCancion() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 z-30 flex items-center gap-2">
+    <div className="fixed right-3 top-[4.75rem] z-30 flex items-center gap-2">
       <audio ref={ref} src={CANCION.src} loop preload="none" />
+      {/* Etiqueta a la izquierda del vinilo (en la esquina derecha no cabe a la derecha) */}
+      {sonando && (
+        <span className="rounded-full bg-crema/90 px-3 py-1 font-sans text-xs font-semibold text-marron shadow backdrop-blur">
+          🎵 {t("La cumbia de Papaupa", "Papaupa's cumbia")}
+        </span>
+      )}
       <button
         type="button"
         onClick={alternar}
@@ -80,12 +86,6 @@ export default function ReproductorCancion() {
           )}
         </span>
       </button>
-      {/* Etiqueta solo cuando suena */}
-      {sonando && (
-        <span className="rounded-full bg-crema/90 px-3 py-1 font-sans text-xs font-semibold text-marron shadow backdrop-blur">
-          🎵 {t("La cumbia de Papaupa", "Papaupa's cumbia")}
-        </span>
-      )}
     </div>
   );
 }
