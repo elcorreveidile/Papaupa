@@ -7,16 +7,16 @@ import { useLang } from "@/lib/i18n";
  * Vídeo de bienvenida a pantalla completa. Se muestra tras superar el juego
  * de entrada (o pulsar "Entra"); al terminar (o saltar) entra a /inicio.
  *
- * Clave en MÓVIL: el autoplay con sonido está bloqueado, así que arranca
- * SILENCIADO (eso sí lo permiten todos los navegadores) para que reproduzca y
- * avance solo. Botón "🔊 Sonido" para activar el audio. Además hay salvavidas
- * por tiempo y onError por si `onEnded` no se dispara (frecuente en iOS).
+ * Arranca CON SONIDO (en iPhone funciona tras la interacción del juego de
+ * entrada). Para que SIEMPRE avance solo aunque `onEnded` no se dispare
+ * (frecuente en móvil), hay salvavidas por tiempo (duración +1,5 s) y onError.
+ * Botón "🔇 Silenciar" por cortesía.
  */
 export default function VideoIntro({ onDone }: { onDone: () => void }) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const doneRef = useRef(false);
   const { t } = useLang();
-  const [conSonido, setConSonido] = useState(false);
+  const [silenciado, setSilenciado] = useState(false);
 
   function finish() {
     if (doneRef.current) return;
@@ -27,10 +27,9 @@ export default function VideoIntro({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
-    // El prop `muted` de React no siempre aplica: lo forzamos por la propiedad.
-    v.muted = true;
+    v.muted = false;
     v.play().catch(() => {
-      /* algún navegador aún lo bloquea: el usuario puede tocar para reproducir */
+      /* si un navegador bloquea el autoplay con sonido, el usuario puede tocar */
     });
 
     // Salvavidas: si no llega `onEnded` (habitual en móvil), avanza igualmente.
@@ -53,9 +52,9 @@ export default function VideoIntro({ onDone }: { onDone: () => void }) {
   function alternarSonido() {
     const v = ref.current;
     if (!v) return;
-    const next = !conSonido;
-    setConSonido(next);
-    v.muted = !next;
+    const next = !silenciado;
+    setSilenciado(next);
+    v.muted = next;
     v.play().catch(() => {});
   }
 
@@ -65,7 +64,6 @@ export default function VideoIntro({ onDone }: { onDone: () => void }) {
         ref={ref}
         src="/video/intro.mp4"
         autoPlay
-        muted
         playsInline
         onEnded={finish}
         onError={finish}
@@ -81,7 +79,7 @@ export default function VideoIntro({ onDone }: { onDone: () => void }) {
         onClick={alternarSonido}
         className="absolute bottom-4 left-4 rounded-full bg-white/15 px-5 py-2 font-sans text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/30"
       >
-        {conSonido ? `🔇 ${t("Silenciar", "Mute")}` : `🔊 ${t("Sonido", "Sound")}`}
+        {silenciado ? `🔊 ${t("Sonido", "Sound")}` : `🔇 ${t("Silenciar", "Mute")}`}
       </button>
 
       <button
