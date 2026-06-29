@@ -97,6 +97,14 @@ body {
   background-attachment: fixed;
 }
 
+/* ----- Reproductor de la canción (vinilo giratorio) ----- */
+@keyframes gira-disco {
+  to { transform: rotate(360deg); }
+}
+.gira-disco {
+  animation: gira-disco 3.6s linear infinite;
+}
+
 /* ----- Libro de visitas: panel de corcho ----- */
 /* Textura de corcho generada con gradientes (sin imagen externa) + marco de madera. */
 .corcho {
