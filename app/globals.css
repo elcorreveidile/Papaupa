@@ -167,3 +167,34 @@ body {
 .flash-pop {
   animation: flash-pop 0.85s ease-out forwards;
 }
+
+/* ----- Pie de página juguetón "Por 2 duros" ----- */
+/* El bichito que se menea cuando pasas el ratón cerca del crédito. */
+@keyframes wiggle-jig {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  25%      { transform: translateY(-6px) rotate(8deg); }
+  50%      { transform: translateY(-2px) rotate(-6deg); }
+  75%      { transform: translateY(-7px) rotate(6deg); }
+}
+.animate-jig {
+  animation: wiggle-jig 0.6s ease-in-out infinite;
+}
+
+/* Globo de diálogo con la frase aleatoria. */
+@keyframes bocadillo-pop {
+  0%   { opacity: 0; transform: translate(-50%, 6px) scale(0.8); }
+  60%  { opacity: 1; transform: translate(-50%, -2px) scale(1.04); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+.animate-bocadillo {
+  animation: bocadillo-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-jig,
+  .animate-bocadillo,
+  .animate-patacon,
+  .animate-bounce-soft {
+    animation: none;
+  }
+}
