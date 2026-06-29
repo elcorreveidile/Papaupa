@@ -9,6 +9,8 @@ export type Plato = {
   desc?: string;
   descEn?: string;
   precio: number;
+  /** Foto del plato (ruta en /public). Opcional. */
+  foto?: string;
 };
 
 export type Categoria = {
@@ -20,7 +22,9 @@ export type Categoria = {
   platos: Plato[];
 };
 
-export const CARTA: Categoria[] = [
+// Datos iniciales para sembrar la BD la primera vez. A partir de ahí, la carta
+// se edita desde el panel (/admin/carta) y se lee de la base de datos.
+export const CARTA_SEED: Categoria[] = [
   {
     id: "entrantes",
     titulo: "Entrantes",
@@ -29,14 +33,14 @@ export const CARTA: Categoria[] = [
     takeaway: true,
     platos: [
       { id: "yuca-frita", nombre: "Yuca frita con ají o con hogao y queso", nombreEn: "Fried yuca with chili or tomato sauce and cheese", precio: 11 },
-      { id: "patacones", nombre: "Patacones con ají o con hogao y queso", nombreEn: "Fried green plantains with chili or tomato sauce and cheese", precio: 11 },
-      { id: "delicias-campo", nombre: "Delicias de campo con miel de caña", nombreEn: "Fried vegetables with cane honey", precio: 12 },
+      { id: "patacones", nombre: "Patacones con ají o con hogao y queso", nombreEn: "Fried green plantains with chili or tomato sauce and cheese", precio: 11, foto: "/images/carta/patacones.jpg" },
+      { id: "delicias-campo", nombre: "Delicias de campo con miel de caña", nombreEn: "Fried eggplant with cane honey", desc: "Berenjenas fritas con miel de caña", descEn: "Fried eggplant with cane honey", precio: 12 },
       { id: "arepitas", nombre: "Arepitas Papaupa (8 ud.)", nombreEn: "Papaupa corn breads (8 pcs)", precio: 13 },
       { id: "hummus-arepitas", nombre: "Hummus con arepitas", nombreEn: "Hummus with corn breads", precio: 11 },
       { id: "carimanolas", nombre: "Carimañolas caseras de yuca y queso", nombreEn: "Homemade yuca and cheese croquettes", precio: 10.5 },
       { id: "lagrimas-bacalao", nombre: "Lágrimas de bacalao", nombreEn: "Cod nuggets", precio: 12 },
       { id: "lagrimas-pollo", nombre: "Lágrimas de pollo a las tres salsas", nombreEn: "Chicken nuggets with three sauces", precio: 11 },
-      { id: "empanadas", nombre: "Empanadas de verduras o de carne (ud.)", nombreEn: "Vegetable or meat empanadas (each)", precio: 3.6 },
+      { id: "empanadas", nombre: "Empanadas de verduras o de carne (ud.)", nombreEn: "Vegetable or meat empanadas (each)", precio: 3.6, foto: "/images/carta/empanadas.jpg" },
       { id: "petiscos", nombre: "Petiscos cucuteños", nombreEn: "Cucuteño combo: empanadas, croquettes & cachapas", desc: "Combinado de empanadas, carimañolas y cachapas", descEn: "Empanadas, croquettes and corn omelette", precio: 13.5 },
       { id: "arroz-coco-racion", nombre: "Ración de arroz con coco", nombreEn: "Coconut rice (portion)", precio: 11.5 },
     ],
@@ -48,9 +52,9 @@ export const CARTA: Categoria[] = [
     emoji: "🥗",
     takeaway: true,
     platos: [
-      { id: "ceviche-cartagenero", nombre: "Ceviche cartagenero", nombreEn: "Cartagena-style ceviche", desc: "Langostinos macerados en lima, cebolla roja y cilantro", descEn: "Prawns in lime, red onion and coriander", precio: 14.8 },
+      { id: "ceviche-cartagenero", nombre: "Ceviche cartagenero", nombreEn: "Cartagena-style ceviche", desc: "Langostinos macerados en lima, cebolla roja y cilantro", descEn: "Prawns in lime, red onion and coriander", precio: 14.8, foto: "/images/carta/ceviche-cartagenero.jpg" },
       { id: "ceviche-atun", nombre: "Ceviche de atún", nombreEn: "Tuna ceviche", desc: "Atún fresco, pepino, apio, cherry, lima y soja", descEn: "Fresh tuna, cucumber, celery, cherry tomato, lime and soy", precio: 12.5 },
-      { id: "ens-pacifico", nombre: "Ensalada del Pacífico", nombreEn: "Pacific salad", desc: "Lechugas, mango, rábanos, aguacate, cebolla roja y tomate seco", descEn: "Lettuce, mango, radish, avocado, red onion and sundried tomato", precio: 14 },
+      { id: "ens-pacifico", nombre: "Ensalada del Pacífico", nombreEn: "Pacific salad", desc: "Lechugas, mango, rábanos, aguacate, cebolla roja y tomate seco", descEn: "Lettuce, mango, radish, avocado, red onion and sundried tomato", precio: 14, foto: "/images/carta/ens-pacifico.jpg" },
       { id: "ens-caribe", nombre: "Ensalada Caribe", nombreEn: "Caribbean salad", desc: "Lechugas, endivias, langostinos, piña, salsa rosa, aguacate y pimiento", descEn: "Lettuce, endive, prawns, pineapple, cocktail sauce, avocado and pepper", precio: 15.5 },
       { id: "ens-papaupa", nombre: "Ensalada Papaupa", nombreEn: "Papaupa salad", desc: "Hojas tiernas, rúcula, canónigos, queso de cabra, guayaba, cherry, pollo y salsa César", descEn: "Baby leaves, arugula, goat cheese, guava, cherry tomato, chicken and Caesar dressing", precio: 15 },
       { id: "tomate-alinao", nombre: "Tomate aliñao", nombreEn: "Dressed tomato salad", desc: "Con AOVE, sardinas ahumadas y lima", descEn: "With olive oil, smoked sardines and lime", precio: 13 },
@@ -64,8 +68,8 @@ export const CARTA: Categoria[] = [
     takeaway: true,
     platos: [
       { id: "atun-parrilla", nombre: "Atún a la parrilla", nombreEn: "Grilled tuna", desc: "Con arroz de coco y patacones (200 gr)", descEn: "With coconut rice and fried plantains (200 g)", precio: 16.8 },
-      { id: "salmon", nombre: "Salmón en miel y soja", nombreEn: "Salmon in honey and soy", desc: "Con trigueros y calabacín a la plancha (200 gr)", descEn: "With grilled asparagus and courgette (200 g)", precio: 16.2 },
-      { id: "dorada", nombre: "Dorada frita estilo costa colombiana", nombreEn: "Colombian-coast fried sea bream", desc: "Con arroz de coco, patacones y ensalada", descEn: "With coconut rice, fried plantains and salad", precio: 18 },
+      { id: "salmon", nombre: "Salmón en miel y soja", nombreEn: "Salmon in honey and soy", desc: "Con trigueros y calabacín a la plancha (200 gr)", descEn: "With grilled asparagus and courgette (200 g)", precio: 16.2, foto: "/images/carta/salmon.jpg" },
+      { id: "dorada", nombre: "Dorada frita estilo costa colombiana", nombreEn: "Colombian-coast fried sea bream", desc: "Con arroz de coco, patacones y ensalada", descEn: "With coconut rice, fried plantains and salad", precio: 18, foto: "/images/carta/dorada.jpg" },
     ],
   },
   {
@@ -162,9 +166,4 @@ export const GLOSARIO: { termino: string; terminoEn: string; definicion: string;
 
 export function formatPrecio(n: number): string {
   return n.toFixed(2).replace(".", ",") + " €";
-}
-
-const TODOS = CARTA.flatMap((c) => c.platos.map((p) => ({ ...p, catId: c.id })));
-export function platoPorId(id: string) {
-  return TODOS.find((p) => p.id === id);
 }

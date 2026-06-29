@@ -4,6 +4,7 @@ import {
   varchar,
   text,
   integer,
+  numeric,
   timestamp,
   boolean,
 } from "drizzle-orm/pg-core";
@@ -100,10 +101,40 @@ export const puntuaciones = pgTable("puntuaciones", {
   creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
 });
 
+/** Categorías de la carta (entrantes, ensaladas, principales…). */
+export const menuCategorias = pgTable("menu_categorias", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug", { length: 40 }).notNull().unique(),
+  titulo: varchar("titulo", { length: 80 }).notNull(),
+  tituloEn: varchar("titulo_en", { length: 80 }).notNull(),
+  emoji: varchar("emoji", { length: 8 }).notNull().default(""),
+  takeaway: boolean("takeaway").notNull().default(true),
+  orden: integer("orden").notNull().default(0),
+  visible: boolean("visible").notNull().default(true),
+});
+
+/** Platos de la carta. */
+export const menuPlatos = pgTable("menu_platos", {
+  id: serial("id").primaryKey(),
+  categoriaId: integer("categoria_id")
+    .notNull()
+    .references(() => menuCategorias.id, { onDelete: "cascade" }),
+  nombre: varchar("nombre", { length: 160 }).notNull(),
+  nombreEn: varchar("nombre_en", { length: 160 }).notNull(),
+  descripcion: varchar("descripcion", { length: 300 }),
+  descripcionEn: varchar("descripcion_en", { length: 300 }),
+  precio: numeric("precio", { precision: 7, scale: 2 }).notNull(),
+  fotoUrl: varchar("foto_url", { length: 500 }),
+  disponible: boolean("disponible").notNull().default(true),
+  orden: integer("orden").notNull().default(0),
+});
+
 export type Usuario = typeof usuarios.$inferSelect;
 export type Reserva = typeof reservas.$inferSelect;
 export type Foto = typeof galeria.$inferSelect;
 export type Puntuacion = typeof puntuaciones.$inferSelect;
+export type MenuCategoria = typeof menuCategorias.$inferSelect;
+export type MenuPlato = typeof menuPlatos.$inferSelect;
 export type Evento = typeof eventos.$inferSelect;
 export type NuevoEvento = typeof eventos.$inferInsert;
 export type Resena = typeof resenas.$inferSelect;

@@ -5,7 +5,7 @@ import Link from "next/link";
 import LogoMark from "@/components/layout/LogoMark";
 import { LangToggle, useLang } from "@/lib/i18n";
 import { PACO_WHATSAPP } from "@/lib/constants";
-import { CARTA, GLOSARIO, formatPrecio, platoPorId, type Plato } from "@/lib/menu";
+import { GLOSARIO, formatPrecio, type Categoria, type Plato } from "@/lib/menu";
 
 const HORAS = (() => {
   const out: string[] = [];
@@ -16,8 +16,13 @@ const HORAS = (() => {
   return out;
 })();
 
-export default function MenuTakeaway() {
+export default function MenuTakeaway({ carta }: { carta: Categoria[] }) {
   const { lang, t } = useLang();
+  const porId = useMemo(() => {
+    const m: Record<string, Plato> = {};
+    carta.forEach((c) => c.platos.forEach((p) => (m[p.id] = p)));
+    return m;
+  }, [carta]);
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartOpen, setCartOpen] = useState(false);
   const [checkout, setCheckout] = useState(false);
@@ -39,9 +44,9 @@ export default function MenuTakeaway() {
   const items = useMemo(
     () =>
       Object.entries(cart)
-        .map(([id, qty]) => ({ p: platoPorId(id), qty }))
-        .filter((x): x is { p: NonNullable<ReturnType<typeof platoPorId>>; qty: number } => Boolean(x.p)),
-    [cart],
+        .map(([id, qty]) => ({ p: porId[id], qty }))
+        .filter((x): x is { p: Plato; qty: number } => Boolean(x.p)),
+    [cart, porId],
   );
   const count = items.reduce((s, i) => s + i.qty, 0);
   const total = items.reduce((s, i) => s + i.qty * i.p.precio, 0);
@@ -101,7 +106,7 @@ export default function MenuTakeaway() {
           </div>
         </div>
         <nav className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-5 pb-3">
-          {CARTA.map((c) => (
+          {carta.map((c) => (
             <a
               key={c.id}
               href={`#cat-${c.id}`}
@@ -124,7 +129,7 @@ export default function MenuTakeaway() {
           )}
         </p>
 
-        {CARTA.map((cat) => (
+        {carta.map((cat) => (
           <section key={cat.id} id={`cat-${cat.id}`} className="scroll-mt-32 pt-10">
             <div className="flex items-baseline justify-between border-b-2 border-marron/15 pb-2">
               <h2 className="font-display text-2xl font-semibold text-marron">
@@ -142,6 +147,15 @@ export default function MenuTakeaway() {
                 const desc = ds(p);
                 return (
                   <li key={p.id} className="flex items-center gap-4 py-3">
+                    {p.foto && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.foto}
+                        alt={nm(p)}
+                        loading="lazy"
+                        className="h-16 w-16 shrink-0 rounded-xl border border-marron/10 object-cover sm:h-20 sm:w-20"
+                      />
+                    )}
                     <div className="min-w-0 flex-1">
                       <p className="font-sans font-semibold text-marron">{nm(p)}</p>
                       {desc && <p className="font-sans text-sm text-marron/60">{desc}</p>}

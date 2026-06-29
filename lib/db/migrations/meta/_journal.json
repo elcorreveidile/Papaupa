@@ -29,6 +29,13 @@
       "when": 1782691105281,
       "tag": "0003_supreme_silhouette",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1782693129007,
+      "tag": "0004_smooth_vampiro",
+      "breakpoints": true
     }
   ]
 }
