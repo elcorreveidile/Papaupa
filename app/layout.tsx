@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n";
 import ReproductorCancion from "@/components/audio/ReproductorCancion";
 import CookieBanner from "@/components/legal/CookieBanner";
+import RestaurantJsonLd from "@/components/seo/RestaurantJsonLd";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -22,12 +23,29 @@ export const metadata: Metadata = {
   title: "Papaupa · Restaurante colombiano-mediterráneo en el Realejo (Granada)",
   description:
     "Cocina colombiano-mediterránea casera y sin prisa en el Realejo (Granada): arepas, ceviches, patacones y pescados, con producto de calidad y opciones veg y sin gluten.",
+  keywords: [
+    "restaurante colombiano Granada",
+    "comida colombiana Realejo",
+    "arepas Granada",
+    "ceviche Granada",
+    "patacones",
+    "cocina fusión Granada",
+    "Papaupa",
+  ],
   openGraph: {
     title: "Papaupa · Retro Fusión Food",
     description:
       "Cocina colombiano-mediterránea casera en el Realejo (Granada): arepas, ceviches, patacones y pescados.",
+    siteName: "Papaupa",
     locale: "es_ES",
     type: "website",
+    images: [{ url: "/images/fachada.jpg", width: 1260, height: 763, alt: "Fachada de Papaupa en el Realejo" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Papaupa · Retro Fusión Food",
+    description:
+      "Cocina colombiano-mediterránea casera en el Realejo (Granada): arepas, ceviches, patacones y pescados.",
     images: ["/images/fachada.jpg"],
   },
 };
@@ -43,6 +61,7 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full">
+        <RestaurantJsonLd />
         <LanguageProvider>
           {children}
           <ReproductorCancion />
