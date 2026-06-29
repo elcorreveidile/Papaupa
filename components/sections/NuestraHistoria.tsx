@@ -46,24 +46,38 @@ export default function NuestraHistoria() {
           </p>
         </div>
 
-        {/* Foto (PLACEHOLDER — sustituir por foto real de Paco y Margarita / del local) */}
-        <div className="relative">
+        {/* Collage del local: mural (principal) + vista de calle (solapada) + sello redondo */}
+        <div className="relative mx-auto w-full max-w-sm pb-6 pt-4 md:mx-0">
+          {/* Foto principal: el mural de la persiana */}
           <div className="rotate-1 rounded-3xl bg-white p-3 shadow-xl">
-            <div className="flex aspect-[4/3] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-marron/25 bg-crema text-center">
-              <span className="text-4xl">📷</span>
-              <p className="mt-3 px-6 font-sans text-sm font-semibold text-marron/60">
-                {t("Foto de Paco y Margarita / del local", "Photo of Paco and Margarita / the venue")}
-              </p>
-              <p className="mt-1 font-mono text-xs text-marron/40">1200 × 900 · 4:3</p>
-            </div>
-            <p className="mt-3 px-1 pb-1 text-center font-display text-lg italic text-marron/70">
-              {t("Paco y Margarita, en casa.", "Paco and Margarita, at home.")}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/local-mural.jpg"
+              alt={t("Mural de la fachada de Papaupa en el Realejo", "Papaupa's painted storefront in the Realejo")}
+              className="aspect-square w-full rounded-2xl object-cover"
+            />
+            <p className="mt-2 px-1 font-display text-lg italic text-marron/70">
+              {t("Nuestra fachada, en el Realejo.", "Our storefront, in the Realejo.")}
             </p>
           </div>
-          {/* Sello decorativo */}
-          <span className="absolute -left-3 -top-3 -rotate-12 rounded-full border border-marron/20 bg-mostaza px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-marron shadow">
-            {t("desde el Realejo", "from the Realejo")}
-          </span>
+
+          {/* Foto secundaria solapada: vista de calle con el balcón */}
+          <div className="absolute -bottom-5 -right-3 w-24 -rotate-6 rounded-xl bg-white p-1.5 shadow-lg sm:w-28">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/local-fachada.jpg"
+              alt={t("Vista de la calle de los Molinos", "View of Calle de los Molinos")}
+              className="aspect-[3/4] w-full rounded-lg object-cover"
+            />
+          </div>
+
+          {/* Sello / logo redondo */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/sello-papaupa.png"
+            alt="Papaupa"
+            className="absolute -left-2 -top-2 w-16 -rotate-12 drop-shadow-md sm:w-20"
+          />
         </div>
       </div>
     </section>
