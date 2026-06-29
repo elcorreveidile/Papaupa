@@ -34,7 +34,7 @@ export const CARTA_SEED: Categoria[] = [
     platos: [
       { id: "yuca-frita", nombre: "Yuca frita con ají o con hogao y queso", nombreEn: "Fried yuca with chili or tomato sauce and cheese", precio: 11 },
       { id: "patacones", nombre: "Patacones con ají o con hogao y queso", nombreEn: "Fried green plantains with chili or tomato sauce and cheese", precio: 11, foto: "/images/carta/patacones.jpg" },
-      { id: "delicias-campo", nombre: "Delicias de campo con miel de caña", nombreEn: "Fried eggplant with cane honey", desc: "Berenjenas fritas con miel de caña", descEn: "Fried eggplant with cane honey", precio: 12 },
+      { id: "delicias-campo", nombre: "Delicias de campo con miel de caña", nombreEn: "Fried eggplant with cane honey", desc: "Berenjenas fritas con miel de caña", descEn: "Fried eggplant with cane honey", precio: 12, foto: "/images/carta/delicias-campo.jpg" },
       { id: "arepitas", nombre: "Arepitas Papaupa (8 ud.)", nombreEn: "Papaupa corn breads (8 pcs)", precio: 13 },
       { id: "hummus-arepitas", nombre: "Hummus con arepitas", nombreEn: "Hummus with corn breads", precio: 11 },
       { id: "carimanolas", nombre: "Carimañolas caseras de yuca y queso", nombreEn: "Homemade yuca and cheese croquettes", precio: 10.5 },
