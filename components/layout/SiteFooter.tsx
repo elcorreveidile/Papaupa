@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
+import NewsletterForm from "@/components/sections/NewsletterForm";
 
 const VERSION = "V.1.0";
 
@@ -63,6 +64,11 @@ export default function SiteFooter() {
           @papauparetrofusionfood
         </a>
       </p>
+
+      {/* Newsletter */}
+      <div className="mt-6 border-y border-crema/10 py-6">
+        <NewsletterForm />
+      </div>
 
       {/* Enlaces legales */}
       <nav className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-sans text-xs text-crema/60">

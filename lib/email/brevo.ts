@@ -34,3 +34,30 @@ export async function enviarEmail(opts: EmailOpts): Promise<{ sent: boolean; dev
   }
   return { sent: true };
 }
+
+const BREVO_CONTACTS = "https://api.brevo.com/v3/contacts";
+
+/**
+ * Da de alta (o actualiza) un contacto en Brevo, opcionalmente en una lista.
+ * Si BREVO_NEWSLETTER_LIST_ID está definido, lo añade a esa lista.
+ * Best-effort: si no hay clave, no hace nada.
+ */
+export async function crearContactoBrevo(email: string): Promise<{ ok: boolean; dev?: boolean }> {
+  const key = process.env.BREVO_API_KEY;
+  if (!key) return { ok: false, dev: true };
+
+  const listId = Number(process.env.BREVO_NEWSLETTER_LIST_ID);
+  const res = await fetch(BREVO_CONTACTS, {
+    method: "POST",
+    headers: { "api-key": key, "content-type": "application/json", accept: "application/json" },
+    body: JSON.stringify({
+      email,
+      updateEnabled: true, // no falla si el contacto ya existe
+      ...(listId ? { listIds: [listId] } : {}),
+    }),
+  });
+
+  // 201 creado, 204 actualizado. Otros códigos: lo dejamos pasar (el alta en
+  // nuestra BD es la fuente de verdad).
+  return { ok: res.ok };
+}
