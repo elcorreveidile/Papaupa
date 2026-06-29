@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/i18n";
+import ContactoForm from "./ContactoForm";
 
 const MAPS_EMBED =
   "https://www.google.com/maps?q=Papaupa,+Calle+de+los+Molinos+16,+18009+Granada&output=embed";
@@ -71,6 +72,10 @@ export default function Contacto() {
               </a>
             </div>
           </div>
+        </div>
+
+        <div className="mt-10">
+          <ContactoForm />
         </div>
       </div>
     </section>

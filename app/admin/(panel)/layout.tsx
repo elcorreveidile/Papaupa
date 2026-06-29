@@ -21,6 +21,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
               <Link href="/admin/eventos" className="hover:text-terracota">Eventos</Link>
               <Link href="/admin/galeria" className="hover:text-terracota">Galería</Link>
               <Link href="/admin/visitas" className="hover:text-terracota">Reseñas</Link>
+              <Link href="/admin/mensajes" className="hover:text-terracota">Mensajes</Link>
               <Link href="/admin/puntuaciones" className="hover:text-terracota">Juegos</Link>
             </nav>
           </div>

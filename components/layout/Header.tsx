@@ -12,7 +12,7 @@ const NAV = [
   { href: "/galeria", es: "Galería", en: "Gallery" },
   { href: "/visitas", es: "Visitas", en: "Guestbook" },
   { href: "/eventos", es: "Eventos", en: "Events" },
-  { href: "#contacto", es: "Contacto", en: "Contact" },
+  { href: "/inicio#contacto", es: "Contacto", en: "Contact" },
   { href: "/juegos", es: "El patio 🎮", en: "Playground 🎮" },
 ];
 

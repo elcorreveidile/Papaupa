@@ -22,6 +22,15 @@ export const reservaSchema = z.object({
 
 export type ReservaInput = z.infer<typeof reservaSchema>;
 
+export const contactoSchema = z.object({
+  nombre: z.string().trim().min(2).max(120),
+  email: z.string().trim().email(),
+  asunto: z.string().trim().max(160).optional(),
+  mensaje: z.string().trim().min(5).max(2000),
+});
+
+export type ContactoInput = z.infer<typeof contactoSchema>;
+
 export const puntuacionSchema = z.object({
   juego: z.enum(["esquiva", "tartazo", "besito"]),
   iniciales: z.string().trim().min(1).max(3),

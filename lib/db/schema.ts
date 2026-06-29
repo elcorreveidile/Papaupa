@@ -129,8 +129,20 @@ export const menuPlatos = pgTable("menu_platos", {
   orden: integer("orden").notNull().default(0),
 });
 
+/** Mensajes del formulario de contacto. */
+export const mensajes = pgTable("mensajes", {
+  id: serial("id").primaryKey(),
+  nombre: varchar("nombre", { length: 120 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  asunto: varchar("asunto", { length: 160 }),
+  mensaje: text("mensaje").notNull(),
+  leido: boolean("leido").notNull().default(false),
+  creadoEn: timestamp("creado_en", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export type Usuario = typeof usuarios.$inferSelect;
 export type Reserva = typeof reservas.$inferSelect;
+export type Mensaje = typeof mensajes.$inferSelect;
 export type Foto = typeof galeria.$inferSelect;
 export type Puntuacion = typeof puntuaciones.$inferSelect;
 export type MenuCategoria = typeof menuCategorias.$inferSelect;
