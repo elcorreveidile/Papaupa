@@ -40,6 +40,12 @@ export default function NuestraHistoria() {
           </p>
           <p className="mt-4 font-sans text-lg leading-relaxed text-marron/80">
             {t(
+              "Hasta la fachada es del barrio: la persiana luce un mural de El Niño de las Pinturas, el conocido artista urbano del Realejo, vecino con el taller a unos pasos de aquí.",
+              "Even the storefront belongs to the neighbourhood: the shutter is a mural by El Niño de las Pinturas, the well-known Realejo street artist — a local whose studio is just a few steps away.",
+            )}
+          </p>
+          <p className="mt-4 font-sans text-lg leading-relaxed text-marron/80">
+            {t(
               "Todo se sirve con tiempo, con cariño y con ese punto retro setentero que te abraza nada más entrar. Porque Papaupa no es solo un restaurante: es su casa. Y cuando cruzas la cortina verde, ya eres de la familia.",
               "Everything is served slowly, with love, and with that warm seventies-retro touch that hugs you the moment you walk in. Because Papaupa isn't just a restaurant: it's their home. And once you step through the green curtain, you're family.",
             )}
@@ -56,13 +62,16 @@ export default function NuestraHistoria() {
               alt={t("Mural de la fachada de Papaupa en el Realejo", "Papaupa's painted storefront in the Realejo")}
               className="aspect-square w-full rounded-2xl object-cover"
             />
-            <p className="mt-2 px-1 font-display text-lg italic text-marron/70">
-              {t("Nuestra fachada, en el Realejo.", "Our storefront, in the Realejo.")}
+            <p className="mt-2 px-1 font-display text-base italic leading-snug text-marron/70">
+              {t(
+                "Mural de El Niño de las Pinturas en nuestra fachada.",
+                "Mural by El Niño de las Pinturas on our storefront.",
+              )}
             </p>
           </div>
 
-          {/* Foto secundaria solapada: vista de calle con el balcón */}
-          <div className="absolute -bottom-5 -right-3 w-24 -rotate-6 rounded-xl bg-white p-1.5 shadow-lg sm:w-28">
+          {/* Foto secundaria solapada: vista de calle con el balcón (arriba a la derecha, deja el pie libre) */}
+          <div className="absolute -right-3 -top-4 w-24 rotate-6 rounded-xl bg-white p-1.5 shadow-lg sm:w-28">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/local-fachada.jpg"
