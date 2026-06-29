@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n";
 import ReproductorCancion from "@/components/audio/ReproductorCancion";
+import CookieBanner from "@/components/legal/CookieBanner";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -45,6 +46,7 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
           <ReproductorCancion />
+          <CookieBanner />
         </LanguageProvider>
       </body>
     </html>
