@@ -20,9 +20,9 @@ Variaciones:
 (acordeón y gaita, ¡ajá!)
 
 [Verso 1]
-En el Realejo de Graná, subiendo el callejón,
-hay una puerta amarilla que te roba el corazón.
-Don Patacón te saluda, con bigote y con sazón,
+En la calle de los Molinos, en el barrio del Realejo,
+una luz cálida te llama y te guiña desde lejos.
+Tras la cortina verdecita, huele a gloria, suena el son,
 "¿pasas, marica?" — y ya empieza la función.
 
 [Pre-Coro]
